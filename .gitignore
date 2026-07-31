@@ -1,0 +1,61 @@
+# ============================
+# JAVA
+# ============================
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+*.log
+*.tmp
+*.bak
+
+# ============================
+# IDE (IntelliJ IDEA, Eclipse, VS Code)
+# ============================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+*.swp
+*.swo
+
+# ============================
+# FRONTEND
+# ============================
+node_modules/
+dist/
+build/
+*.min.js
+*.min.css
+
+# ============================
+# SYSTEM FILES
+# ============================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.temp
+
+# ============================
+# ENVIRONMENT & SECRETS
+# ============================
+.env
+application-local.properties
+*.secret
+*.pem
+*.key
+
+# ============================
+# OTHER
+# ============================
+*.zip
+*.tar.gz
+*.rar
+*.7z
