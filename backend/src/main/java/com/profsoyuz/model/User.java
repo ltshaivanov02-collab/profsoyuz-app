@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.ArrayList;
+
 
 @Entity
 @Table(name = "users")
@@ -66,9 +68,21 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
     // ============================================
     // ГЕТТЕРЫ И СЕТТЕРЫ
     // ============================================
+
+
+    public List<Bookmark> getBookmarks() {
+        return bookmarks;
+    }
+
+    public void setBookmarks(List<Bookmark> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
 
     public Long getId() {
         return id;

@@ -1,27 +1,26 @@
 package com.profsoyuz.service;
 
 import com.profsoyuz.model.User;
+import com.profsoyuz.model.Role;
 import com.profsoyuz.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    // ============================================
-    // КОНСТРУКТОР
-    // ============================================
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     // ============================================
-    // ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ДЛЯ SPRING SECURITY
+    // ДЛЯ SPRING SECURITY
     // ============================================
 
     @Override
@@ -31,16 +30,12 @@ public class UserService implements UserDetailsService {
     }
 
     // ============================================
-    // СОХРАНЕНИЕ ПОЛЬЗОВАТЕЛЯ
+    // БАЗОВЫЕ МЕТОДЫ
     // ============================================
 
     public User save(User user) {
         return userRepository.save(user);
     }
-
-    // ============================================
-    // ПРОВЕРКА СУЩЕСТВОВАНИЯ ПОЛЬЗОВАТЕЛЯ
-    // ============================================
 
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
@@ -48,5 +43,23 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    // ============================================
+    // МЕТОДЫ ДЛЯ АДМИНА
+    // ============================================
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUser(Long id) {
+        User user = getUserById(id);
+        userRepository.delete(user);
     }
 }

@@ -1,4 +1,6 @@
-package com.profsoyuz.model;
+package com.profsoyuz.dto;
+
+import com.profsoyuz.model.Role;
 
 public class RegisterRequest {
 

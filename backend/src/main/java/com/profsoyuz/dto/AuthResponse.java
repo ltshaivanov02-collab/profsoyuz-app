@@ -1,4 +1,4 @@
-package com.profsoyuz.model;
+package com.profsoyuz.dto;
 
 public class AuthResponse {
     private String token;
