@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style-admin.css">
+    <link rel="stylesheet" href="css/style-modal.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+
+    <!-- ===== ШАПКА ===== -->
+    <header class="header">
+        <span class="logo">🛠️ Профсоюз</span>
+        <div class="header-actions">
+            <a href="profile.html" class="header-icon" title="Профиль">
+                <i class="bx bx-user-circle"></i>
+            </a>
+            <a href="#" class="header-icon" title="Уведомления">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="header-icon" title="Настройки">
+                <i class="bx bx-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <div class="grid">
+
+        <!-- ЛЕВАЯ КОЛОНКА (навигация) -->
+        <aside class="container">
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
+                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
+                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+                    <li class="active"><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
+                    <li id="navStatistics" style="display:none;"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА (админ-панель) -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>🛠️ Админ-панель</h2>
+            </div>
+
+            <!-- ===== ВКЛАДКИ ===== -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="news">📰 Новости</button>
+                <button class="tab-btn" data-tab="events">📅 События</button>
+                <button class="tab-btn" data-tab="applications">📋 Заявки</button>
+                <button class="tab-btn" data-tab="questions">❓ Вопросы</button>
+                <button class="tab-btn" data-tab="users">👥 Пользователи</button>
+                <button class="tab-btn" data-tab="tasks">📌 Задачи</button>
+            </div>
+
+            <!-- ===== КОНТЕНТ ВКЛАДОК ===== -->
+            <div id="adminContent" class="admin-content">
+
+                <!-- Вкладка: Новости -->
+                <div id="tab-news" class="admin-tab active">
+                    <div class="admin-tab-header">
+                        <h3>📰 Управление новостями</h3>
+                        <button onclick="Modal.open('newsModal')" class="btn btn-primary">
+                            <i class="bx bx-plus"></i> Создать новость
+                        </button>
+                    </div>
+                    <div id="adminNewsList" class="admin-list"></div>
+                </div>
+
+                <!-- Вкладка: События -->
+                <div id="tab-events" class="admin-tab">
+                    <div class="admin-tab-header">
+                        <h3>📅 Управление событиями</h3>
+                        <button onclick="Modal.open('eventModal')" class="btn btn-primary">
+                            <i class="bx bx-plus"></i> Создать событие
+                        </button>
+                    </div>
+                    <div id="adminEventsList" class="admin-list"></div>
+                </div>
+
+                <!-- Вкладка: Заявки -->
+                <div id="tab-applications" class="admin-tab">
+                    <div class="admin-tab-header">
+                        <h3>📋 Управление заявками</h3>
+                    </div>
+                    <div id="adminApplicationsList" class="admin-list"></div>
+                </div>
+
+                <!-- Вкладка: Вопросы -->
+                <div id="tab-questions" class="admin-tab">
+                    <div class="admin-tab-header">
+                        <h3>❓ Управление вопросами</h3>
+                    </div>
+                    <div id="adminQuestionsList" class="admin-list"></div>
+                </div>
+
+                <!-- Вкладка: Пользователи -->
+                <div id="tab-users" class="admin-tab">
+                    <div class="admin-tab-header">
+                        <h3>👥 Управление пользователями</h3>
+                        <button onclick="adminCreateUser()" class="btn btn-primary">
+                            <i class="bx bx-plus"></i> Создать пользователя
+                        </button>
+                    </div>
+                    <div id="adminUsersList" class="admin-list"></div>
+                </div>
+
+                <!-- Вкладка: Задачи -->
+                <div id="tab-tasks" class="admin-tab">
+                    <div class="admin-tab-header">
+                        <h3>📌 Диспетчер задач</h3>
+                        <button onclick="adminCreateTask()" class="btn btn-primary">
+                            <i class="bx bx-plus"></i> Создать задачу
+                        </button>
+                    </div>
+                    <div id="adminTasksList" class="admin-list"></div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ПРАВАЯ КОЛОНКА (sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>📊 Статистика</h3>
+                <div class="admin-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Новости</span>
+                        <span class="stat-value" id="statNews">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">События</span>
+                        <span class="stat-value" id="statEvents">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Заявки</span>
+                        <span class="stat-value" id="statApplications">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Вопросы</span>
+                        <span class="stat-value" id="statQuestions">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Пользователи</span>
+                        <span class="stat-value" id="statUsers">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Задачи</span>
+                        <span class="stat-value" id="statTasks">0</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ✅ МОДАЛЬНЫЕ ОКНА                             -->
+<!-- ============================================ -->
+
+<!-- МОДАЛКА: СОЗДАНИЕ НОВОСТИ -->
+<div id="newsModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2><span class="modal-icon">📰</span> Создать новость</h2>
+            <button class="modal-close" onclick="Modal.close('newsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="newsForm">
+                <div class="form-group">
+                    <label>Заголовок <span class="required">*</span></label>
+                    <input type="text" id="newsTitle" placeholder="Введите заголовок" required>
+                </div>
+                <div class="form-group">
+                    <label>Текст <span class="required">*</span></label>
+                    <textarea id="newsContent" rows="5" placeholder="Введите текст новости" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Ссылка на изображение</label>
+                    <input type="url" id="newsImageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('newsModal')">Отмена</button>
+            <button class="btn btn-primary" form="newsForm" type="submit">📤 Создать</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: СОЗДАНИЕ СОБЫТИЯ -->
+<div id="eventModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2><span class="modal-icon">📅</span> Создать событие</h2>
+            <button class="modal-close" onclick="Modal.close('eventModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="eventForm">
+                <div class="form-group">
+                    <label>Название <span class="required">*</span></label>
+                    <input type="text" id="eventTitle" placeholder="Введите название" required>
+                </div>
+                <div class="form-group">
+                    <label>Описание <span class="required">*</span></label>
+                    <textarea id="eventDescription" rows="3" placeholder="Введите описание" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Ссылка на изображение</label>
+                    <input type="url" id="eventImageUrl" placeholder="https://example.com/image.jpg">
+                    <small style="color: rgba(255,255,255,0.5); font-size: 12px; display: block; margin-top: 4px;">
+                        Вставьте прямую ссылку на изображение (необязательно)
+                    </small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата <span class="required">*</span></label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Время <span class="required">*</span></label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Место <span class="required">*</span></label>
+                    <input type="text" id="eventLocation" placeholder="Введите место проведения" required>
+                </div>
+                <div class="form-group">
+                    <label>Макс. участников <span class="required">*</span></label>
+                    <input type="number" id="eventMaxParticipants" placeholder="10" min="1" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('eventModal')">Отмена</button>
+            <button class="btn btn-primary" form="eventForm" type="submit">📤 Создать</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: ОБРАБОТКА ЗАЯВКИ -->
+<div id="applicationModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2><span class="modal-icon">📋</span> Обработка заявки</h2>
+            <button class="modal-close" onclick="Modal.close('applicationModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-info" id="applicationInfo"></div>
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label>Ответ администратора</label>
+                    <textarea id="applicationResponse" rows="3" placeholder="Введите ответ"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Статус <span class="required">*</span></label>
+                    <select id="applicationStatus">
+                        <option value="APPROVED">✅ Одобрено</option>
+                        <option value="REJECTED">❌ Отклонено</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('applicationModal')">Отмена</button>
+            <button class="btn btn-primary" form="applicationForm" type="submit">✅ Обработать</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ✅ ПОДКЛЮЧЕНИЕ JS                             -->
+<!-- ============================================ -->
+<script src="js/auth.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.profsoyuz.service;
 
+import com.profsoyuz.dto.BookmarkDto;
 import com.profsoyuz.model.Bookmark;
 import com.profsoyuz.model.Event;
 import com.profsoyuz.model.News;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookmarkService {
@@ -32,7 +34,14 @@ public class BookmarkService {
 
     @Transactional
     public Bookmark addNewsBookmark(Long userId, Long newsId) {
+        // Проверяем, существует ли новость
         News news = newsService.getNewsById(newsId);
+
+        // Проверяем, не добавлена ли уже закладка
+        if (bookmarkRepository.existsByUserIdAndNewsId(userId, newsId)) {
+            throw new RuntimeException("News already bookmarked");
+        }
+
         User user = new User();
         user.setId(userId);
 
@@ -46,6 +55,9 @@ public class BookmarkService {
 
     @Transactional
     public void removeNewsBookmark(Long userId, Long newsId) {
+        if (!bookmarkRepository.existsByUserIdAndNewsId(userId, newsId)) {
+            throw new RuntimeException("Bookmark not found");
+        }
         bookmarkRepository.deleteByUserIdAndNewsId(userId, newsId);
     }
 
@@ -60,6 +72,11 @@ public class BookmarkService {
     @Transactional
     public Bookmark addEventBookmark(Long userId, Long eventId) {
         Event event = eventService.getEventById(eventId);
+
+        if (bookmarkRepository.existsByUserIdAndEventId(userId, eventId)) {
+            throw new RuntimeException("Event already bookmarked");
+        }
+
         User user = new User();
         user.setId(userId);
 
@@ -73,6 +90,9 @@ public class BookmarkService {
 
     @Transactional
     public void removeEventBookmark(Long userId, Long eventId) {
+        if (!bookmarkRepository.existsByUserIdAndEventId(userId, eventId)) {
+            throw new RuntimeException("Bookmark not found");
+        }
         bookmarkRepository.deleteByUserIdAndEventId(userId, eventId);
     }
 
@@ -81,11 +101,40 @@ public class BookmarkService {
     }
 
     // ============================================
-    // ПОЛУЧЕНИЕ ВСЕХ ЗАКЛАДОК ПОЛЬЗОВАТЕЛЯ
+    // ПОЛУЧЕНИЕ ЗАКЛАДОК ПОЛЬЗОВАТЕЛЯ
     // ============================================
 
     public List<Bookmark> getUserBookmarks(Long userId) {
         return bookmarkRepository.findByUserId(userId);
+    }
+
+    public List<BookmarkDto> getUserBookmarksDto(Long userId) {
+        return bookmarkRepository.findByUserId(userId)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    // ============================================
+    // ПРЕОБРАЗОВАНИЕ ENTITY → DTO
+    // ============================================
+
+    private BookmarkDto convertToDto(Bookmark bookmark) {
+        BookmarkDto dto = new BookmarkDto();
+        dto.setId(bookmark.getId());
+        dto.setCreatedAt(bookmark.getCreatedAt().toString());
+
+        if (bookmark.getNews() != null) {
+            dto.setNewsId(bookmark.getNews().getId());
+            dto.setNewsTitle(bookmark.getNews().getTitle());
+        }
+
+        if (bookmark.getEvent() != null) {
+            dto.setEventId(bookmark.getEvent().getId());
+            dto.setEventTitle(bookmark.getEvent().getTitle());
+        }
+
+        return dto;
     }
 }
 

@@ -1,5 +1,6 @@
 package com.profsoyuz.service;
 
+import com.profsoyuz.dto.EventParticipantDto;
 import com.profsoyuz.dto.EventResponse;
 import com.profsoyuz.model.Event;
 import com.profsoyuz.model.EventRegistration;
@@ -57,6 +58,10 @@ public class EventService {
     @Transactional
     public Event createEvent(String title, String description, LocalDateTime dateTime,
                              String location, Integer maxParticipants, User createdBy) {
+        if (createdBy == null) {
+            throw new RuntimeException("createdBy cannot be null");
+        }
+
         Event event = new Event();
         event.setTitle(title);
         event.setDescription(description);
@@ -131,6 +136,10 @@ public class EventService {
         response.setCreatedAt(event.getCreatedAt());
 
         return response;
+    }
+
+    public List<EventParticipantDto> getEventParticipants(Long eventId) {
+        return eventRegistrationRepository.getEventParticipants(eventId);
     }
 }
 

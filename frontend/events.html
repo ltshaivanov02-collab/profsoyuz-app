@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>События | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style-events.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <span class="logo">🏛️ Профсоюз</span>
+        <div class="header-actions">
+            <a href="profile.html" class="header-icon" title="Профиль">
+                <i class="bx bx-user-circle"></i>
+            </a>
+            <a href="#" class="header-icon" title="Уведомления">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="header-icon" title="Настройки">
+                <i class="bx bx-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="grid">
+        <aside class="container">
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
+                    <li class="active"><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
+                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+                    <li id="navAdmin" style="display:none;"><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
+                    <li id="navStatistics" style="display:none;"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>📅 События</h2>
+            </div>
+            <div id="eventsList" class="card-list"></div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>📋 Последние заявки</h3>
+                <p>Нет новых заявок</p>
+                <hr>
+                <h3>⭐ Закладки</h3>
+                <p>Нет закладок</p>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/events.js"></script>
+</body>
+</html>

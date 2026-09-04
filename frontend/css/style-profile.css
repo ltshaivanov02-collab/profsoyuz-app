@@ -1,0 +1,302 @@
+/* ===== ПРОФИЛЬ ===== */
+.profile-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.profile-avatar {
+    position: relative;
+}
+
+.profile-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #0f3460;
+    object-fit: cover;
+}
+
+.avatar-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    gap: 4px;
+}
+
+.avatar-actions .btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+.profile-details p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+.profile-details strong {
+    color: #555;
+}
+
+.profile-details #fullName {
+    font-weight: 600;
+    font-size: 18px;
+    color: #1a1a2e;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* ===== БЕЙДЖ РОЛИ ===== */
+.role-badge {
+    padding: 4px 14px;
+    background: #0f3460;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ===== КАЛЕНДАРЬ ===== */
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.calendar-controls #currentMonthLabel {
+    font-weight: 600;
+    min-width: 120px;
+    text-align: center;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.calendar-grid .day-name {
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+}
+
+.calendar-grid .day {
+    padding: 10px 4px;
+    text-align: center;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.calendar-grid .day:hover {
+    background: #e9ecef;
+}
+
+.calendar-grid .day.has-event {
+    background: #0f3460;
+    color: #fff;
+    font-weight: 600;
+}
+
+.calendar-grid .day.has-event:hover {
+    background: #1a4a7a;
+}
+
+.calendar-grid .day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.calendar-grid .day.today {
+    border: 2px solid #0f3460;
+}
+
+.selected-day-events {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    min-height: 50px;
+}
+
+/* ===== РАЗДЕЛЫ ===== */
+.section-card {
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.section-card h3 {
+    font-size: 18px;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.section-filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 4px 12px;
+    background: #e9ecef;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.filter-btn:hover {
+    background: #ced4da;
+}
+
+.filter-btn.active {
+    background: #0f3460;
+    color: #fff;
+}
+
+/* ===== ЗАЯВЛЕНИЯ ===== */
+.application-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid #0f3460;
+}
+
+.application-item .app-info {
+    flex: 1;
+}
+
+.application-item .app-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.application-item .app-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.application-item .app-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 12px;
+    border-radius: 12px;
+}
+
+/* ===== ЗАКЛАДКИ ===== */
+.bookmark-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+
+.bookmark-item .bookmark-title {
+    font-size: 14px;
+    color: #333;
+}
+
+.bookmark-item .bookmark-type {
+    font-size: 12px;
+    color: #888;
+}
+
+/* ===== АКТИВНОСТЬ В САЙДБАРЕ ===== */
+.activity-stats {
+    margin-top: 8px;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-label {
+    color: #888;
+}
+
+.activity-value {
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+/* ===== БЫСТРЫЕ ССЫЛКИ ===== */
+.quick-links {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+}
+
+.quick-links li {
+    padding: 6px 0;
+}
+
+.quick-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0f3460;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.quick-links a:hover {
+    color: #1a4a7a;
+    text-decoration: underline;
+}

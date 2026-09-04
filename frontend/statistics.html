@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style-statistics.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <span class="logo">📊 Профсоюз</span>
+        <div class="header-actions">
+            <a href="profile.html" class="header-icon" title="Профиль">
+                <i class="bx bx-user-circle"></i>
+            </a>
+            <a href="#" class="header-icon" title="Уведомления">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="header-icon" title="Настройки">
+                <i class="bx bx-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="grid">
+        <aside class="container">
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
+                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
+                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+                    <li><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
+                    <li class="active"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>📊 Статистика</h2>
+                <span class="role-badge" id="roleBadge">BOSS</span>
+            </div>
+
+            <div class="widgets-grid">
+                <div class="widget"><div class="widget-icon">👥</div><div class="widget-info"><span class="widget-label">Пользователи</span><strong id="totalUsers">0</strong></div></div>
+                <div class="widget"><div class="widget-icon">📰</div><div class="widget-info"><span class="widget-label">Новости</span><strong id="totalNews">0</strong></div></div>
+                <div class="widget"><div class="widget-icon">📅</div><div class="widget-info"><span class="widget-label">События</span><strong id="totalEvents">0</strong></div></div>
+                <div class="widget"><div class="widget-icon">📋</div><div class="widget-info"><span class="widget-label">Заявки</span><strong id="totalApplications">0</strong></div></div>
+                <div class="widget"><div class="widget-icon">📌</div><div class="widget-info"><span class="widget-label">Задачи</span><strong id="totalTasks">0</strong></div></div>
+                <div class="widget"><div class="widget-icon">❓</div><div class="widget-info"><span class="widget-label">Вопросы</span><strong id="totalQuestions">0</strong></div></div>
+            </div>
+
+            <section class="stats-section">
+                <h3>🏆 Популярность мероприятий</h3>
+                <div id="popularityList" class="popularity-list"><p style="color:#888;">Загрузка...</p></div>
+            </section>
+
+            <section class="stats-section">
+                <h3>📊 Динамика записей по событиям</h3>
+                <div class="period-selector">
+                    <button class="period-btn active" data-period="month">Месяц</button>
+                    <button class="period-btn" data-period="quarter">Квартал</button>
+                    <button class="period-btn" data-period="year">Год</button>
+                </div>
+                <div id="eventStatsList" class="stats-list"><p style="color:#888;">Загрузка...</p></div>
+            </section>
+
+            <section class="stats-section">
+                <h3>👥 Новые пользователи по месяцам</h3>
+                <div id="userRegistrationsList" class="stats-list"><p style="color:#888;">Загрузка...</p></div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>📌 Фильтры</h3>
+                <div class="filter-group">
+                    <label>Период</label>
+                    <select id="periodSelect">
+                        <option value="month">За месяц</option>
+                        <option value="quarter">За квартал</option>
+                        <option value="year">За год</option>
+                    </select>
+                </div>
+                <hr>
+                <h3>📋 Сводка</h3>
+                <div id="summaryStats">
+                    <div class="summary-item"><span>Всего пользователей:</span><strong id="summaryUsers">0</strong></div>
+                    <div class="summary-item"><span>Всего новостей:</span><strong id="summaryNews">0</strong></div>
+                    <div class="summary-item"><span>Всего событий:</span><strong id="summaryEvents">0</strong></div>
+                    <div class="summary-item"><span>Заявок в обработке:</span><strong id="summaryPendingApps">0</strong></div>
+                    <div class="summary-item"><span>Вопросов без ответа:</span><strong id="summaryPendingQuestions">0</strong></div>
+                </div>
+                <hr>
+                <div class="export-section">
+                    <button onclick="exportReport()" class="btn btn-primary"><i class="bx bx-download"></i> Скачать отчёт (PDF)</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/statistics.js"></script>
+</body>
+</html>

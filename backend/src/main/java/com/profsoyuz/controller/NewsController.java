@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -136,6 +137,7 @@ public class NewsController {
     }
 
     @DeleteMapping("/{id}/reactions")
+    @Transactional
     public void removeReaction(@PathVariable Long id,
                                @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;

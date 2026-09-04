@@ -1,5 +1,6 @@
 package com.profsoyuz.controller;
 
+import com.profsoyuz.dto.EventParticipantDto;
 import com.profsoyuz.dto.EventResponse;
 import com.profsoyuz.model.Event;
 import com.profsoyuz.model.EventRegistration;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -63,6 +65,9 @@ public class EventController {
     @PreAuthorize("hasAnyRole('ADMIN', 'BOSS')")
     public EventResponse createEvent(@RequestBody CreateEventRequest request,
                                      @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated. Please login again.");
+        }
         User createdBy = (User) userDetails;
         Event event = eventService.createEvent(
                 request.getTitle(),
@@ -101,6 +106,7 @@ public class EventController {
     // ============================================
 
     @PostMapping("/{id}/register")
+    @Transactional
     public String registerForEvent(@PathVariable Long id,
                                    @RequestParam(defaultValue = "1") int quantity,
                                    @AuthenticationPrincipal UserDetails userDetails) {
@@ -125,6 +131,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}/register")
+    @Transactional
     public String cancelRegistration(@PathVariable Long id,
                                      @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
@@ -200,5 +207,11 @@ public class EventController {
         public void setLocation(String location) { this.location = location; }
         public Integer getMaxParticipants() { return maxParticipants; }
         public void setMaxParticipants(Integer maxParticipants) { this.maxParticipants = maxParticipants; }
+    }
+
+    @GetMapping("/{id}/participants")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BOSS')")
+    public List<EventParticipantDto> getEventParticipants(@PathVariable Long id) {
+        return eventService.getEventParticipants(id);
     }
 }

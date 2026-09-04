@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style-index.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <!-- ===== ШАПКА ===== -->
+    <header class="header">
+        <span class="logo">🏛️ Профсоюз</span>
+        <div class="header-actions">
+            <a href="profile.html" class="header-icon" title="Профиль">
+                <i class="bx bx-user-circle"></i>
+            </a>
+            <a href="#" class="header-icon" title="Уведомления">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="header-icon" title="Настройки">
+                <i class="bx bx-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== ТРИ КОЛОНКИ ===== -->
+    <div class="grid">
+
+        <!-- ЛЕВАЯ КОЛОНКА (навигация) -->
+        <aside class="container">
+            <nav class="navigation">
+                <ul>
+                    <li class="active"><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
+                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
+                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+
+                    <!-- Ссылка на админ-панель (скрыта по умолчанию) -->
+                    <li id="navAdmin" style="display:none;">
+                        <a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a>
+                    </li>
+
+                    <!-- Ссылка на статистику (скрыта по умолчанию) -->
+                    <li id="navStatistics" style="display:none;">
+                        <a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a>
+                    </li>
+
+                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА (новости) -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>📰 Новости</h2>
+
+            </div>
+            <div id="newsList" class="card-list">
+                <!-- Сюда JavaScript вставит карточки новостей -->
+            </div>
+        </main>
+
+        <!-- ПРАВАЯ КОЛОНКА (sidebar) -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>📋 Последние заявки</h3>
+                <p>Нет новых заявок</p>
+                <hr>
+                <h3>⭐ Закладки</h3>
+                <p>Нет закладок</p>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/news.js"></script>
+</body>
+</html>

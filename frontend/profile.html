@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/style-profile.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <span class="logo">🏛️ Профсоюз</span>
+        <div class="header-actions">
+            <a href="profile.html" class="header-icon" title="Профиль">
+                <i class="bx bx-user-circle"></i>
+            </a>
+            <a href="#" class="header-icon" title="Уведомления">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </a>
+            <a href="#" class="header-icon" title="Настройки">
+                <i class="bx bx-cog"></i>
+            </a>
+        </div>
+    </header>
+
+    <div class="grid">
+        <aside class="container">
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
+                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
+                    <li class="active"><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+                    <li id="navAdmin" style="display:none;"><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
+                    <li id="navStatistics" style="display:none;"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>👤 Личный кабинет</h2>
+                <span class="role-badge" id="roleBadge">USER</span>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img id="profilePhoto" src="https://via.placeholder.com/120" alt="Фото профиля">
+                    <div class="avatar-actions">
+                        <button id="uploadPhotoBtn" class="btn btn-sm btn-primary">📷</button>
+                        <button id="removePhotoBtn" class="btn btn-sm btn-danger">✕</button>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <p><strong>Имя:</strong> <span id="fullName">—</span></p>
+                    <p><strong>Логин:</strong> <span id="username">—</span></p>
+                    <p><strong>Роль:</strong> <span id="roleText">—</span></p>
+                    <p><strong>Email:</strong> <span id="email">—</span></p>
+                    <div class="profile-actions">
+                        <button id="editProfileBtn" class="btn btn-warning">✏️ Редактировать</button>
+                        <button id="changePasswordBtn" class="btn btn-secondary">🔑 Сменить пароль</button>
+                    </div>
+                </div>
+            </div>
+
+            <section class="section-card">
+                <h3>🗓️ Календарь мероприятий</h3>
+                <div class="calendar-controls">
+                    <button id="prevMonthBtn" class="btn btn-secondary btn-sm">◀</button>
+                    <span id="currentMonthLabel">Август 2026</span>
+                    <button id="nextMonthBtn" class="btn btn-secondary btn-sm">▶</button>
+                </div>
+                <div id="calendarGrid" class="calendar-grid"></div>
+                <div id="selectedDayEvents" class="selected-day-events"></div>
+            </section>
+
+            <section class="section-card">
+                <div class="section-header">
+                    <h3>📋 Мои заявления</h3>
+                    <div class="section-filters">
+                        <button class="filter-btn active" data-filter="all">Все</button>
+                        <button class="filter-btn" data-filter="PENDING">⏳ В обработке</button>
+                        <button class="filter-btn" data-filter="APPROVED">✅ Одобрено</button>
+                        <button class="filter-btn" data-filter="REJECTED">❌ Отклонено</button>
+                    </div>
+                </div>
+                <div id="applicationsList" class="applications-list"></div>
+            </section>
+
+            <section class="section-card">
+                <h3>⭐ Мои закладки</h3>
+                <div id="bookmarksList" class="bookmarks-list"></div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3>📊 Активность</h3>
+                <div class="activity-stats">
+                    <div class="activity-item">
+                        <span class="activity-label">Заявлений:</span>
+                        <span class="activity-value" id="activityApplications">0</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-label">Вопросов:</span>
+                        <span class="activity-value" id="activityQuestions">0</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-label">Закладок:</span>
+                        <span class="activity-value" id="activityBookmarks">0</span>
+                    </div>
+                    <div class="activity-item">
+                        <span class="activity-label">Событий:</span>
+                        <span class="activity-value" id="activityEvents">0</span>
+                    </div>
+                </div>
+                <hr>
+                <h3>📌 Быстрые ссылки</h3>
+                <ul class="quick-links">
+                    <li><a href="communication.html"><i class="bx bx-chat"></i> Новое обращение</a></li>
+                    <li><a href="events.html"><i class="bx bx-calendar"></i> Смотреть события</a></li>
+                    <li><a href="index.html"><i class="bx bx-news"></i> Читать новости</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

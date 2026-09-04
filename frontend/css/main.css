@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+margin: 0;
+padding: 0;
+}
+
+body {
+font-family: 'Poppins',sans-serif;
+font-weight;
+
+}
+
+a {
+text-decoration: none;
+}
+
+img {
+max-width: 100%;
+}
+
+.wrapper {
+max-width: 1422px;
+width: 100%;
+margin: 0 auto;
+padding: 20px 20px;
+background: #f0f2f5;
+min-height: 100vh;
+}
+
+
+
+/* ============================================ */
+/* HEADER — ШАПКА                               */
+/* ============================================ */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a2e;
+    padding: 12px 24px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    color: #fff;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.header .logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* ===== ПРАВАЯ ЧАСТЬ ШАПКИ (иконки) ===== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-icon {
+    position: relative;
+    color: #aaa;
+    font-size: 26px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.header-icon:hover {
+    color: #fff;
+}
+
+/* ===== БЕЙДЖ ===== */
+.header-icon .badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================ */
+/* GRID — РЕЗИНОВАЯ 3-КОЛОНОЧНАЯ СЕТКА         */
+/* ============================================ */
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* ============================================ */
+/* КОЛОНКА 1: container (резиновая)             */
+/* ============================================ */
+
+.container {
+    flex: 0 0 18%;          /* 18% от родителя */
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    min-height: 400px;
+    box-sizing: border-box;
+}
+
+/* ============================================ */
+/* КОЛОНКА 2: main-content (резиновая)          */
+/* ============================================ */
+
+.main-content {
+    flex: 1;                /* занимает всё оставшееся место */
+    min-width: 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    min-height: 500px;
+}
+
+/* ============================================ */
+/* КОЛОНКА 3: sidebar (резиновая)               */
+/* ============================================ */
+
+.sidebar {
+    flex: 0 0 20%;          /* 20% от родителя */
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    min-height: 400px;
+}
+
+/* ============================================ */
+/* НАВИГАЦИЯ                                    */
+/* ============================================ */
+
+.navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation ul li {
+    margin-bottom: 4px;
+}
+
+.navigation ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #555;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.navigation ul li a i {
+    font-size: 20px;
+}
+
+.navigation ul li a:hover {
+    background: #f0f2f5;
+    color: #0f3460;
+}
+
+.navigation ul li.active a {
+    background: #0f3460;
+    color: #fff;
+}
+
+.navigation ul li.btn a {
+    background: #dc3545;
+    color: #fff;
+    margin-top: 8px;
+}
+
+.navigation ul li.btn a:hover {
+    background: #c82333;
+}
+
+/* ============================================ */
+/* СТРАНИЦА                                    */
+/* ============================================ */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.page-header h2 {
+    font-size: 22px;
+    color: #1a1a2e;
+}
+
+/* ============================================ */
+/* САЙДБАР (ПРАВАЯ КОЛОНКА)                     */
+/* ============================================ */
+
+.sidebar-content h3 {
+    font-size: 16px;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+}
+
+.sidebar-content p {
+    color: #888;
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+.sidebar-content hr {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+/* ============================================ */
+/* КАРТОЧКИ                                     */
+/* ============================================ */
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ============================================ */
+/* КНОПКИ                                       */
+/* ============================================ */
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-primary {
+    background: #0f3460;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1a4a7a;
+}
+

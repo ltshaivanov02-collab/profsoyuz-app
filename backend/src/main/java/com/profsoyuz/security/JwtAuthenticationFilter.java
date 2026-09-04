@@ -27,13 +27,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     // ============================================
-    // ⚡ НЕ ПРОВЕРЯТЬ ТОКЕН ДЛЯ ПУБЛИЧНЫХ ЭНДПОИНТОВ
+    // ⚡ НЕ ПРОВЕРЯТЬ ТОКЕН ТОЛЬКО ДЛЯ ПУБЛИЧНЫХ ЭНДПОИНТОВ
     // ============================================
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/api/auth/") ||
+        return path.equals("/api/auth/login") ||
+                path.equals("/api/auth/register") ||
                 path.startsWith("/api/test/") ||
                 path.startsWith("/swagger-ui/") ||
                 path.startsWith("/api-docs/") ||
@@ -78,3 +79,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+
