@@ -31,11 +31,13 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;  // ← ИСПРАВЛЕНО!
+    private Role role;
 
     @Column(name = "first_login")
     private boolean firstLogin = true;
@@ -163,6 +165,7 @@ public class User implements UserDetails {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 
     // ============================================
     // МЕТОДЫ UserDetails

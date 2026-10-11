@@ -36,6 +36,10 @@ public class Event {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    private String imageUrl;
+
+
     // ============================================
     // КОНСТРУКТОРЫ
     // ============================================
@@ -45,7 +49,7 @@ public class Event {
 
     public Event(Long id, String title, String description, LocalDateTime dateTime,
                  String location, Integer maxParticipants, User createdBy,
-                 LocalDateTime createdAt, LocalDateTime updatedAt) {
+                 LocalDateTime createdAt, LocalDateTime updatedAt, String imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -55,6 +59,7 @@ public class Event {
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.imageUrl = imageUrl;
     }
 
     // ============================================
@@ -133,6 +138,14 @@ public class Event {
         this.updatedAt = updatedAt;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     // ============================================
     // toString()
     // ============================================
@@ -146,6 +159,6 @@ public class Event {
                 ", location='" + location + '\'' +
                 ", maxParticipants=" + maxParticipants +
                 ", createdBy=" + (createdBy != null ? createdBy.getUsername() : "null") +
-                '}';
+                ", imageUrl='" + imageUrl + '\'' + '}';
     }
 }

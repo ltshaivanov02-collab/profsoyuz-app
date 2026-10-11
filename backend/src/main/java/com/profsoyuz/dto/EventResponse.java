@@ -14,6 +14,12 @@ public class EventResponse {
     private Boolean isFullyBooked;
     private String createdByName;
     private LocalDateTime createdAt;
+    private String imageUrl;
+
+
+    private long heartsCount;
+    private long totalReactionsCount;
+    private Integer commentsCount;
 
     public EventResponse() {
     }
@@ -28,7 +34,8 @@ public class EventResponse {
                          Integer remainingPlaces,
                          Boolean isFullyBooked,
                          String createdByName,
-                         LocalDateTime createdAt) {
+                         LocalDateTime createdAt,
+                         String imageUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -40,93 +47,51 @@ public class EventResponse {
         this.isFullyBooked = isFullyBooked;
         this.createdByName = createdByName;
         this.createdAt = createdAt;
+        this.imageUrl = imageUrl;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public LocalDateTime getDateTime() { return dateTime; }
+    public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public Integer getMaxParticipants() { return maxParticipants; }
+    public void setMaxParticipants(Integer maxParticipants) { this.maxParticipants = maxParticipants; }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+    public Integer getRegisteredCount() { return registeredCount; }
+    public void setRegisteredCount(Integer registeredCount) { this.registeredCount = registeredCount; }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+    public Integer getRemainingPlaces() { return remainingPlaces; }
+    public void setRemainingPlaces(Integer remainingPlaces) { this.remainingPlaces = remainingPlaces; }
 
-    public String getLocation() {
-        return location;
-    }
+    public Boolean getFullyBooked() { return isFullyBooked; }
+    public void setFullyBooked(Boolean fullyBooked) { isFullyBooked = fullyBooked; }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    public String getCreatedByName() { return createdByName; }
+    public void setCreatedByName(String createdByName) { this.createdByName = createdByName; }
 
-    public Integer getMaxParticipants() {
-        return maxParticipants;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public void setMaxParticipants(Integer maxParticipants) {
-        this.maxParticipants = maxParticipants;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public Integer getRegisteredCount() {
-        return registeredCount;
-    }
+    public long getHeartsCount() { return heartsCount; }
+    public void setHeartsCount(long heartsCount) { this.heartsCount = heartsCount; }
 
-    public void setRegisteredCount(Integer registeredCount) {
-        this.registeredCount = registeredCount;
-    }
+    public long getTotalReactionsCount() { return totalReactionsCount; }
+    public void setTotalReactionsCount(long totalReactionsCount) { this.totalReactionsCount = totalReactionsCount; }
 
-    public Integer getRemainingPlaces() {
-        return remainingPlaces;
-    }
-
-    public void setRemainingPlaces(Integer remainingPlaces) {
-        this.remainingPlaces = remainingPlaces;
-    }
-
-    public Boolean getFullyBooked() {
-        return isFullyBooked;
-    }
-
-    public void setFullyBooked(Boolean fullyBooked) {
-        isFullyBooked = fullyBooked;
-    }
-
-    public String getCreatedByName() {
-        return createdByName;
-    }
-
-    public void setCreatedByName(String createdByName) {
-        this.createdByName = createdByName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public Integer getCommentsCount() { return commentsCount; }
+    public void setCommentsCount(Integer commentsCount) { this.commentsCount = commentsCount; }
 }

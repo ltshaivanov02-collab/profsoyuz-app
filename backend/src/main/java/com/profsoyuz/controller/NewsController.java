@@ -1,9 +1,13 @@
 package com.profsoyuz.controller;
 
+import com.profsoyuz.dto.CommentDto;                          // ← ДОБАВИТЬ
+import com.profsoyuz.dto.MyReactionDto;
 import com.profsoyuz.dto.NewsResponse;
 import com.profsoyuz.model.News;
+import com.profsoyuz.model.NewsComment;                       // ← ДОБАВИТЬ
 import com.profsoyuz.model.ReactionType;
 import com.profsoyuz.model.User;
+import com.profsoyuz.repository.NewsCommentRepository;        // ← ДОБАВИТЬ
 import com.profsoyuz.repository.NewsReactionRepository;
 import com.profsoyuz.service.BookmarkService;
 import com.profsoyuz.service.NewsService;
@@ -14,7 +18,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDateTime;                               // ← ДОБАВИТЬ
+import java.util.List;                                        // ← уже есть
+import java.util.Map;                                         // ← ДОБАВИТЬ
+import java.util.stream.Collectors;                           // ← уже есть
 
 @RestController
 @RequestMapping("/api/news")
@@ -23,17 +30,20 @@ public class NewsController {
     private final NewsService newsService;
     private final NewsReactionRepository newsReactionRepository;
     private final BookmarkService bookmarkService;
+    private final NewsCommentRepository newsCommentRepository;  // ← ДОБАВИТЬ
 
     public NewsController(NewsService newsService,
                           NewsReactionRepository newsReactionRepository,
-                          BookmarkService bookmarkService) {
+                          BookmarkService bookmarkService,
+                          NewsCommentRepository newsCommentRepository) {  // ← ДОБАВИТЬ
         this.newsService = newsService;
         this.newsReactionRepository = newsReactionRepository;
         this.bookmarkService = bookmarkService;
+        this.newsCommentRepository = newsCommentRepository;      // ← ДОБАВИТЬ
     }
 
     // ============================================
-    // ПОЛУЧИТЬ ВСЕ НОВОСТИ (БЕЗ ПАГИНАЦИИ)
+    // ПОЛУЧИТЬ ВСЕ НОВОСТИ
     // ============================================
 
     @GetMapping
@@ -42,7 +52,7 @@ public class NewsController {
     }
 
     // ============================================
-    // ПОЛУЧИТЬ НОВОСТИ С ПАГИНАЦИЕЙ (НОВОЕ!)
+    // ПОЛУЧИТЬ НОВОСТИ С ПАГИНАЦИЕЙ
     // ============================================
 
     @GetMapping("/paged")
@@ -53,17 +63,7 @@ public class NewsController {
     }
 
     // ============================================
-    // ПОЛУЧИТЬ НОВОСТЬ ПО ID
-    // ============================================
-
-    @GetMapping("/{id}")
-    public NewsResponse getNewsbyId(@PathVariable Long id) {
-        News news = newsService.getNewsById(id);
-        return newsService.convertToResponse(news);
-    }
-
-    // ============================================
-    // СОЗДАТЬ НОВОСТЬ (ТОЛЬКО ADMIN/BOSS)
+    // СОЗДАТЬ НОВОСТЬ (ADMIN/BOSS)
     // ============================================
 
     @PostMapping
@@ -84,10 +84,10 @@ public class NewsController {
     }
 
     // ============================================
-    // ОБНОВИТЬ НОВОСТЬ (ТОЛЬКО ADMIN/BOSS)
+    // ОБНОВИТЬ НОВОСТЬ (ADMIN/BOSS)
     // ============================================
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN', 'BOSS')")
     public NewsResponse updateNews(@PathVariable Long id,
                                    @RequestBody CreateNewsRequest request) {
@@ -101,10 +101,10 @@ public class NewsController {
     }
 
     // ============================================
-    // УДАЛИТЬ НОВОСТЬ (ТОЛЬКО ADMIN/BOSS)
+    // УДАЛИТЬ НОВОСТЬ (ADMIN/BOSS)
     // ============================================
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN', 'BOSS')")
     public void deleteNews(@PathVariable Long id) {
         newsService.deleteNews(id);
@@ -114,7 +114,7 @@ public class NewsController {
     // РЕАКЦИИ НА НОВОСТИ
     // ============================================
 
-    @PostMapping("/{id}/reactions")
+    @PostMapping("/{id:\\d+}/reactions")
     public void addReaction(@PathVariable Long id,
                             @RequestParam ReactionType type,
                             @AuthenticationPrincipal UserDetails userDetails) {
@@ -136,7 +136,7 @@ public class NewsController {
                 );
     }
 
-    @DeleteMapping("/{id}/reactions")
+    @DeleteMapping("/{id:\\d+}/reactions")
     @Transactional
     public void removeReaction(@PathVariable Long id,
                                @AuthenticationPrincipal UserDetails userDetails) {
@@ -145,10 +145,34 @@ public class NewsController {
     }
 
     // ============================================
+    // ✅ НОВЫЙ ЭНДПОИНТ: МОИ РЕАКЦИИ
+    // ============================================
+
+    @GetMapping("/reactions/my")
+    public List<MyReactionDto> getMyReactions(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return List.of();
+        }
+
+        User user = (User) userDetails;
+
+        return newsReactionRepository.findByUserId(user.getId())
+                .stream()
+                .filter(reaction -> reaction.getNews() != null)
+                .map(reaction -> new MyReactionDto(
+                        reaction.getNews().getId(),
+                        reaction.getNews().getTitle(),
+                        reaction.getReactionType() != null ? reaction.getReactionType().name() : null,
+                        reaction.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // ============================================
     // ЗАКЛАДКИ НА НОВОСТИ
     // ============================================
 
-    @PostMapping("/{id}/bookmark")
+    @PostMapping("/{id:\\d+}/bookmark")
     public String addBookmark(@PathVariable Long id,
                               @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
@@ -156,7 +180,7 @@ public class NewsController {
         return "News bookmarked successfully";
     }
 
-    @DeleteMapping("/{id}/bookmark")
+    @DeleteMapping("/{id:\\d+}/bookmark")
     public String removeBookmark(@PathVariable Long id,
                                  @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
@@ -164,7 +188,7 @@ public class NewsController {
         return "News unbookmarked successfully";
     }
 
-    @GetMapping("/{id}/bookmarked")
+    @GetMapping("/{id:\\d+}/bookmarked")
     public boolean isBookmarked(@PathVariable Long id,
                                 @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
@@ -172,7 +196,17 @@ public class NewsController {
     }
 
     // ============================================
-    // ВНУТРЕННИЙ DTO ДЛЯ СОЗДАНИЯ НОВОСТИ
+    // ПОЛУЧИТЬ НОВОСТЬ ПО ID (ПОСЛЕДНИМ!)
+    // ============================================
+
+    @GetMapping("/{id:\\d+}")
+    public NewsResponse getNewsbyId(@PathVariable Long id) {
+        News news = newsService.getNewsById(id);
+        return newsService.convertToResponse(news);
+    }
+
+    // ============================================
+    // ВНУТРЕННИЙ DTO
     // ============================================
 
     public static class CreateNewsRequest {
@@ -186,5 +220,43 @@ public class NewsController {
         public void setContent(String content) { this.content = content; }
         public String getImageUrl() { return imageUrl; }
         public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    }
+
+    @GetMapping("/{id:\\d+}/comments")
+    public List<CommentDto> getComments(@PathVariable Long id) {
+        return newsCommentRepository.findByNewsIdOrderByCreatedAtDesc(id)
+                .stream()
+                .map(c -> {
+                    CommentDto dto = new CommentDto();
+                    dto.setId(c.getId());
+                    dto.setText(c.getText());
+                    dto.setUserName(c.getUser() != null ? c.getUser().getFullName() : "Неизвестно");
+                    dto.setCreatedAt(c.getCreatedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/{id:\\d+}/comments")
+    public CommentDto addComment(@PathVariable Long id,
+                                 @RequestBody Map<String, String> request,
+                                 @AuthenticationPrincipal UserDetails userDetails) {
+        User user = (User) userDetails;
+        News news = newsService.getNewsById(id);
+
+        NewsComment comment = new NewsComment();
+        comment.setNews(news);
+        comment.setUser(user);
+        comment.setText(request.get("text"));
+        comment.setCreatedAt(LocalDateTime.now());
+
+        NewsComment saved = newsCommentRepository.save(comment);
+
+        CommentDto dto = new CommentDto();
+        dto.setId(saved.getId());
+        dto.setText(saved.getText());
+        dto.setUserName(user.getFullName());
+        dto.setCreatedAt(saved.getCreatedAt());
+        return dto;
     }
 }

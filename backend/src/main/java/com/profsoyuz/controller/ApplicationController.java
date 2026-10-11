@@ -32,12 +32,20 @@ public class ApplicationController {
         return applicationService.getApplicationsByUser(user.getId());
     }
 
+    // Получить заявку по ID
+    @GetMapping("/{id:\\d+}")
+    public ApplicationResponse getApplicationById(@PathVariable Long id) {
+        Application application = applicationService.getApplicationById(id);
+        return applicationService.convertToResponse(application);
+    }
+
     @PostMapping
     public ApplicationResponse createApplication(@RequestBody CreateApplicationRequest request,
                                                  @AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
         Application application = applicationService.createApplication(
                 user,
+                request.getSubject(),
                 request.getText(),
                 request.getFileUrl()
         );
@@ -61,9 +69,12 @@ public class ApplicationController {
 
 
     public static class CreateApplicationRequest {
+        private String subject;
         private String text;
         private String fileUrl;
 
+        public String getSubject() { return subject; }
+        public void setSubject(String subject) { this.subject = subject; }
         public String getText() { return text; }
         public void setText(String text) { this.text = text; }
         public String getFileUrl() { return fileUrl; }

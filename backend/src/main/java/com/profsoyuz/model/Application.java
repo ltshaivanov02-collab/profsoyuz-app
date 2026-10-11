@@ -15,6 +15,9 @@ public class Application {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(name = "subject")
+    private String subject;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String text;
 
@@ -45,11 +48,12 @@ public class Application {
     public Application() {
     }
 
-    public Application(Long id, User user, String text, String fileUrl,
+    public Application(Long id, User user, String subject, String text, String fileUrl,
                        ApplicationStatus status, String adminResponse,
                        User admin, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.user = user;
+        this.subject = subject;
         this.text = text;
         this.fileUrl = fileUrl;
         this.status = status;
@@ -86,6 +90,10 @@ public class Application {
     public void setText(String text) {
         this.text = text;
     }
+
+    public String getSubject() { return subject; }
+
+    public void setSubject(String subject) { this.subject = subject; }
 
     public String getFileUrl() {
         return fileUrl;

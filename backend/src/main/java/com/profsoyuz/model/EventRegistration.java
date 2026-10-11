@@ -25,6 +25,15 @@ public class EventRegistration {
     @Column(nullable = false)
     private Integer quantity = 1;
 
+    @Column(name = "members_count")
+    private Integer membersCount = 1;
+
+    @Column(name = "relatives_count")
+    private Integer relativesCount = 0;
+
+    @Column(columnDefinition = "TEXT")
+    private String comment;
+
     @Column(name = "registered_at")
     private LocalDateTime registeredAt;
 
@@ -35,11 +44,21 @@ public class EventRegistration {
     public EventRegistration() {
     }
 
-    public EventRegistration(Long id, User user, Event event, Integer quantity, LocalDateTime registeredAt) {
+    public EventRegistration(Long id,
+                             User user,
+                             Event event,
+                             Integer quantity,
+                             Integer membersCount,
+                             Integer relativesCount,
+                             String comment,
+                             LocalDateTime registeredAt) {
         this.id = id;
         this.user = user;
         this.event = event;
         this.quantity = quantity;
+        this.membersCount = membersCount;
+        this.relativesCount = relativesCount;
+        this.comment = comment;
         this.registeredAt = registeredAt;
     }
 
@@ -79,6 +98,15 @@ public class EventRegistration {
         this.quantity = quantity;
     }
 
+    public Integer getMembersCount() { return membersCount; }
+    public void setMembersCount(Integer membersCount) { this.membersCount = membersCount; }
+
+    public Integer getRelativesCount() { return relativesCount; }
+    public void setRelativesCount(Integer relativesCount) { this.relativesCount = relativesCount; }
+
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment = comment; }
+
     public LocalDateTime getRegisteredAt() {
         return registeredAt;
     }
@@ -98,6 +126,9 @@ public class EventRegistration {
                 ", user=" + (user != null ? user.getUsername() : "null") +
                 ", event=" + (event != null ? event.getId() : "null") +
                 ", quantity=" + quantity +
+                ", membersCount=" + membersCount +           // ✅ ДОБАВЛЕНО
+                ", relativesCount=" + relativesCount +       // ✅ ДОБАВЛЕНО
+                ", comment='" + comment + '\'' +
                 ", registeredAt=" + registeredAt +
                 '}';
     }

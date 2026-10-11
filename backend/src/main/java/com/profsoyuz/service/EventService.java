@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.profsoyuz.repository.EventCommentRepository;
+import com.profsoyuz.repository.EventReactionRepository;
+import com.profsoyuz.model.ReactionType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,11 +26,20 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final EventRegistrationRepository eventRegistrationRepository;
+    private final NotificationService notificationService;
+    private final EventCommentRepository eventCommentRepository;
+    private final EventReactionRepository eventReactionRepository;
 
     public EventService(EventRepository eventRepository,
-                        EventRegistrationRepository eventRegistrationRepository) {
+                        EventRegistrationRepository eventRegistrationRepository,
+                        NotificationService notificationService,
+                        EventCommentRepository eventCommentRepository,
+                        EventReactionRepository eventReactionRepository) {
         this.eventRepository = eventRepository;
         this.eventRegistrationRepository = eventRegistrationRepository;
+        this.notificationService = notificationService;
+        this.eventCommentRepository = eventCommentRepository;
+        this.eventReactionRepository = eventReactionRepository;
     }
 
     public List<EventResponse> getAllEvents() {
@@ -57,7 +69,9 @@ public class EventService {
 
     @Transactional
     public Event createEvent(String title, String description, LocalDateTime dateTime,
-                             String location, Integer maxParticipants, User createdBy) {
+                             String location, Integer maxParticipants,
+                             String imageUrl,
+                             User createdBy) {
         if (createdBy == null) {
             throw new RuntimeException("createdBy cannot be null");
         }
@@ -68,22 +82,39 @@ public class EventService {
         event.setDateTime(dateTime);
         event.setLocation(location);
         event.setMaxParticipants(maxParticipants);
+        event.setImageUrl(imageUrl);
         event.setCreatedBy(createdBy);
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
-        return eventRepository.save(event);
+        Event saved = eventRepository.save(event);
+
+        // ✅ УВЕДОМЛЕНИЕ ВСЕМ ПОЛЬЗОВАТЕЛЯМ
+        notificationService.createNotificationForAllUsers(
+                "event",
+                "Новое событие",
+                title + " — " + dateTime.toLocalDate(),
+                "events.html"
+        );
+
+        return saved;
     }
+
 
     @Transactional
     public Event updateEvent(Long id, String title, String description, LocalDateTime dateTime,
-                             String location, Integer maxParticipants) {
+                             String location, Integer maxParticipants,
+                             String imageUrl) {
         Event event = getEventById(id);
         event.setTitle(title);
         event.setDescription(description);
         event.setDateTime(dateTime);
         event.setLocation(location);
         event.setMaxParticipants(maxParticipants);
+
+        if (imageUrl != null) {
+            event.setImageUrl(imageUrl);
+        }
         event.setUpdatedAt(LocalDateTime.now());
 
         return eventRepository.save(event);
@@ -102,10 +133,7 @@ public class EventService {
     }
 
     public List<EventResponse> getUserEventsForMonth(Long userId, int year, int month) {
-        // Начало месяца
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-
-        // Конец месяца
         int daysInMonth = start.getMonth().length(start.toLocalDate().isLeapYear());
         LocalDateTime end = start.withDayOfMonth(daysInMonth)
                 .withHour(23).withMinute(59).withSecond(59);
@@ -115,7 +143,6 @@ public class EventService {
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }
-
 
     public EventResponse convertToResponse(Event event) {
         Integer booked = eventRegistrationRepository.sumQuantityByEventId(event.getId());
@@ -134,12 +161,31 @@ public class EventService {
         response.setFullyBooked(remainingPlaces <= 0);
         response.setCreatedByName(event.getCreatedBy() != null ? event.getCreatedBy().getFullName() : "Unknown");
         response.setCreatedAt(event.getCreatedAt());
+        response.setImageUrl(event.getImageUrl());
+
+        // ✅ СЧЁТЧИК КОММЕНТАРИЕВ
+        long commentsCount = eventCommentRepository.countByEventId(event.getId());
+        response.setCommentsCount((int) commentsCount);
+
+        // ✅ СЧЁТЧИК СЕРДЕЧЕК
+        long hearts = eventReactionRepository.countByEventIdAndReactionType(
+                event.getId(), ReactionType.HEART);
+        response.setHeartsCount(hearts);
+        response.setTotalReactionsCount(hearts);
 
         return response;
     }
 
     public List<EventParticipantDto> getEventParticipants(Long eventId) {
         return eventRegistrationRepository.getEventParticipants(eventId);
+    }
+
+    public List<EventResponse> getRegisteredEvents(Long userId) {
+        return eventRegistrationRepository.findByUserId(userId)
+                .stream()
+                .filter(reg -> reg.getEvent() != null)
+                .map(reg -> convertToResponse(reg.getEvent()))
+                .collect(Collectors.toList());
     }
 }
 

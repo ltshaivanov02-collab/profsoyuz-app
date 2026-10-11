@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class ApplicationResponse {
     private Long id;
+    private String subject;
     private String text;
     private String fileUrl;
     private ApplicationStatus status;
@@ -17,10 +18,11 @@ public class ApplicationResponse {
     public ApplicationResponse() {
     }
 
-    public ApplicationResponse(Long id, String text, String fileUrl, ApplicationStatus status,
+    public ApplicationResponse(Long id, String subject, String text, String fileUrl, ApplicationStatus status,
                                String adminResponse, String userName, String adminName,
                                LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.subject = subject;
         this.text = text;
         this.fileUrl = fileUrl;
         this.status = status;
@@ -38,6 +40,10 @@ public class ApplicationResponse {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getSubject() { return subject; }
+
+    public void setSubject(String subject) { this.subject = subject; }
 
     public String getText() {
         return text;

@@ -35,6 +35,11 @@ public class Task {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
+
+
+
     public Task() {
     }
 
@@ -61,4 +66,7 @@ public class Task {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public LocalDateTime getDeadline() { return deadline; }
+    public void setDeadline(LocalDateTime deadline) { this.deadline = deadline; }
 }

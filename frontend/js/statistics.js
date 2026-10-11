@@ -1,186 +1,350 @@
 //const API_URL = 'http://localhost:8080/api';
 
 // ============================================
+// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+// ============================================
+
+let allUsersCache = [];
+let allEventsCache = [];
+let allApplicationsCache = [];
+let allTasksCache = [];
+
+// ============================================
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    const role = localStorage.getItem('role');
-
-    if (role !== 'BOSS') {
-        document.querySelector('.main-content').innerHTML = `
-            <div style="text-align:center;padding:40px;">
-                <h2>⛔ Доступ запрещён</h2>
-                <p>Только руководитель (BOSS) может просматривать статистику</p>
-                <a href="index.html" class="btn btn-primary">Вернуться на главную</a>
-            </div>
-        `;
-        return;
-    }
-
-    document.getElementById('roleBadge').textContent = role;
-
-    loadDashboard();
-    loadEventPopularity();
-    loadEventStats('month');
-    loadUserRegistrations();
-
-    document.querySelectorAll('.period-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            loadEventStats(this.dataset.period);
-        });
-    });
-
-    document.getElementById('periodSelect').addEventListener('change', function() {
-        loadEventStats(this.value);
-    });
+    loadDashboardStats();
 });
 
 // ============================================
-// 1. ОБЩАЯ СВОДКА
+// ЗАГРУЗКА ОБЩЕЙ СТАТИСТИКИ
 // ============================================
 
-async function loadDashboard() {
+async function loadDashboardStats() {
     try {
         const response = await fetch(`${API_URL}/statistics/dashboard`, {
             headers: getHeaders()
         });
 
-        if (!response.ok) throw new Error('Ошибка загрузки дашборда');
+        if (!response.ok) throw new Error('Ошибка загрузки');
 
         const data = await response.json();
 
-        document.getElementById('totalUsers').textContent = data.totalUsers || 0;
-        document.getElementById('totalNews').textContent = data.totalNews || 0;
-        document.getElementById('totalEvents').textContent = data.totalEvents || 0;
-        document.getElementById('totalApplications').textContent = data.totalApplications || 0;
-        document.getElementById('totalTasks').textContent = data.totalTasks || 0;
-        document.getElementById('totalQuestions').textContent = data.totalQuestions || 0;
+        // Карточки
+        document.getElementById('statUsersCount').textContent = data.totalUsers || 0;
+        document.getElementById('statEventsCount').textContent = data.totalEvents || 0;
+        document.getElementById('statApplicationsCount').textContent = data.totalApplications || 0;
+        document.getElementById('statTasksCount').textContent = data.totalTasks || 0;
 
-        document.getElementById('summaryUsers').textContent = data.totalUsers || 0;
-        document.getElementById('summaryNews').textContent = data.totalNews || 0;
-        document.getElementById('summaryEvents').textContent = data.totalEvents || 0;
-        document.getElementById('summaryPendingApps').textContent = data.pendingApplications || 0;
-        document.getElementById('summaryPendingQuestions').textContent = data.pendingQuestions || 0;
+        // Сайдбар
+        document.getElementById('statApprovedApps').textContent = data.approvedApplications || 0;
+        document.getElementById('statRejectedApps').textContent = data.rejectedApplications || 0;
+        document.getElementById('statActiveTasks').textContent = data.activeTasks || 0;
 
     } catch (error) {
-        console.error('Ошибка загрузки дашборда:', error);
+        console.error('Ошибка загрузки статистики:', error);
     }
 }
 
 // ============================================
-// 2. ПОПУЛЯРНОСТЬ МЕРОПРИЯТИЙ
+// 1. ПОЛЬЗОВАТЕЛИ
 // ============================================
 
-async function loadEventPopularity() {
-    const container = document.getElementById('popularityList');
+async function openUsersStats() {
+    Modal.open('usersStatsModal');
+
+    const container = document.getElementById('usersStatsList');
+    container.innerHTML = '<p style="text-align:center;color:#888;">Загрузка...</p>';
 
     try {
-        const response = await fetch(`${API_URL}/statistics/events/popularity`, {
+        const response = await fetch(`${API_URL}/admin/users`, {
             headers: getHeaders()
         });
 
-        if (!response.ok) throw new Error('Ошибка загрузки популярности');
+        if (!response.ok) throw new Error('Ошибка загрузки');
 
-        const data = await response.json();
+        allUsersCache = await response.json();
+        renderUsersStats('all');
 
-        if (!data || data.length === 0) {
-            container.innerHTML = '<p style="color:#888;">Нет данных о популярности мероприятий</p>';
+    } catch (error) {
+        console.error('Ошибка:', error);
+        container.innerHTML = '<p style="text-align:center;color:#dc3545;">Ошибка загрузки</p>';
+    }
+}
+
+function filterUsers(filter, btn) {
+    // Переключение активного таба
+    document.querySelectorAll('#usersStatsModal .stats-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    renderUsersStats(filter);
+}
+
+function renderUsersStats(filter) {
+    const container = document.getElementById('usersStatsList');
+
+    let users = allUsersCache;
+
+    if (filter === 'new') {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        users = users.filter(u => {
+            const created = new Date(u.createdAt);
+            return created.getMonth() === currentMonth && created.getFullYear() === currentYear;
+        });
+    }
+
+    if (users.length === 0) {
+        container.innerHTML = '<p class="stats-empty">Пользователей нет</p>';
+        return;
+    }
+
+    container.innerHTML = users.map(user => `
+        <div class="stats-item">
+            <div class="item-info">
+                <div class="item-title">${user.fullName || user.username}</div>
+                <div class="item-sub">
+                    <span>${user.username}</span>
+                    <span>${user.email || '—'}</span>
+                    <span class="badge badge-${user.role?.toLowerCase() || 'user'}">${user.role || 'USER'}</span>
+                </div>
+            </div>
+            <div class="item-sub">
+                <span>${new Date(user.createdAt).toLocaleDateString('ru-RU')}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// 2. СОБЫТИЯ
+// ============================================
+
+async function openEventsStats() {
+    Modal.open('eventsStatsModal');
+
+    const container = document.getElementById('eventsStatsList');
+    container.innerHTML = '<p style="text-align:center;color:#888;">Загрузка...</p>';
+
+    try {
+        const response = await fetch(`${API_URL}/events`, {
+            headers: getHeaders()
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки');
+
+        allEventsCache = await response.json();
+        renderEventsStats('all');
+
+    } catch (error) {
+        console.error('Ошибка:', error);
+        container.innerHTML = '<p style="text-align:center;color:#dc3545;">Ошибка загрузки</p>';
+    }
+}
+
+function filterEvents(filter, btn) {
+    document.querySelectorAll('#eventsStatsModal .stats-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    renderEventsStats(filter);
+}
+
+function renderEventsStats(filter) {
+    const container = document.getElementById('eventsStatsList');
+    let events = [...allEventsCache];
+
+    if (filter === 'popular') {
+        // Топ 5 за текущий месяц
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        events = events
+            .filter(e => {
+                const d = new Date(e.dateTime);
+                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            })
+            .sort((a, b) => (b.registeredCount || 0) - (a.registeredCount || 0))
+            .slice(0, 5);
+    } else if (filter === 'liked') {
+        // Топ 5 за текущий месяц по лайкам
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        events = events
+            .filter(e => {
+                const d = new Date(e.dateTime);
+                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            })
+            .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
+            .slice(0, 5);
+    }
+
+    if (events.length === 0) {
+        container.innerHTML = '<p class="stats-empty">Событий нет</p>';
+        return;
+    }
+
+    container.innerHTML = events.map(event => `
+        <div class="stats-item">
+            <div class="item-info">
+                <div class="item-title">${event.title}</div>
+                <div class="item-sub">
+                    <span>${new Date(event.dateTime).toLocaleString('ru-RU')}</span>
+                    <span>${event.location || '—'}</span>
+                    <span>Участников: ${event.registeredCount || 0}/${event.maxParticipants || 0}</span>
+                    <span>Лайков: ${event.likesCount || 0}</span>
+                </div>
+            </div>
+            <div class="item-actions">
+                <button class="btn btn-sm btn-info" onclick="openEventParticipants(${event.id}, '${event.title.replace(/'/g, "\\'")}')">
+                    Участники
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ============================================
+// УЧАСТНИКИ СОБЫТИЯ
+// ============================================
+
+async function openEventParticipants(eventId, eventTitle) {
+    Modal.open('eventParticipantsModal');
+
+    document.getElementById('eventParticipantsTitle').textContent = 'Участники: ' + eventTitle;
+
+    const container = document.getElementById('eventParticipantsList');
+    container.innerHTML = '<p style="text-align:center;color:#888;">Загрузка...</p>';
+
+    try {
+        const response = await fetch(`${API_URL}/events/${eventId}/participants`, {
+            headers: getHeaders()
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки');
+
+        const participants = await response.json();
+
+        if (!participants || participants.length === 0) {
+            container.innerHTML = '<p class="stats-empty">Участников нет</p>';
             return;
         }
 
-        const maxCount = Math.max(...data.map(item => item.participantsCount));
+        container.innerHTML = participants.map((p, index) => `
+            <div class="stats-item">
+                <div class="item-info">
+                    <div class="item-title">${index + 1}. ${p.userName || 'Неизвестно'}</div>
+                    <div class="item-sub">
+                        <span>${p.userEmail || '—'}</span>
+                        <span>Членов: ${p.membersCount || 0}</span>
+                        <span>Родственников: ${p.relativesCount || 0}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
-        container.innerHTML = data.map((item, index) => {
-            const percent = maxCount ? (item.participantsCount / maxCount) * 100 : 0;
+    } catch (error) {
+        console.error('Ошибка:', error);
+        container.innerHTML = '<p style="text-align:center;color:#dc3545;">Ошибка загрузки</p>';
+    }
+}
+
+// ============================================
+// 3. ЗАЯВЛЕНИЯ
+// ============================================
+
+async function openApplicationsStats() {
+    Modal.open('applicationsStatsModal');
+
+    try {
+        const response = await fetch(`${API_URL}/applications`, {
+            headers: getHeaders()
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки');
+
+        allApplicationsCache = await response.json();
+
+        const total = allApplicationsCache.length;
+        const approved = allApplicationsCache.filter(a => a.status === 'APPROVED').length;
+        const rejected = allApplicationsCache.filter(a => a.status === 'REJECTED').length;
+        const pending = allApplicationsCache.filter(a => a.status === 'PENDING').length;
+
+        document.getElementById('appsTotal').textContent = total;
+        document.getElementById('appsApproved').textContent = approved;
+        document.getElementById('appsRejected').textContent = rejected;
+        document.getElementById('appsPending').textContent = pending;
+
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+}
+
+// ============================================
+// 4. ЗАДАЧИ
+// ============================================
+
+async function openTasksStats() {
+    Modal.open('tasksStatsModal');
+
+    const container = document.getElementById('tasksStatsList');
+    container.innerHTML = '<p style="text-align:center;color:#888;">Загрузка...</p>';
+
+    try {
+        const response = await fetch(`${API_URL}/admin/tasks`, {
+            headers: getHeaders()
+        });
+
+        if (!response.ok) throw new Error('Ошибка загрузки');
+
+        allTasksCache = await response.json();
+
+        if (!allTasksCache || allTasksCache.length === 0) {
+            container.innerHTML = '<p class="stats-empty">Задач нет</p>';
+            return;
+        }
+
+        container.innerHTML = allTasksCache.map(task => {
+            const statusMap = {
+                'PENDING': { text: 'Ожидает', class: 'pending' },
+                'IN_PROGRESS': { text: 'В работе', class: 'in_progress' },
+                'COMPLETED': { text: 'Выполнено', class: 'completed' }
+            };
+            const status = statusMap[task.status] || statusMap['PENDING'];
+
             return `
-                <div class="popularity-item">
-                    <span class="rank">#${index + 1}</span>
-                    <span class="name">${item.eventTitle || 'Без названия'}</span>
-                    <span class="count">👥 ${item.participantsCount || 0}</span>
-                    <div class="bar">
-                        <div class="bar-fill" style="width: ${percent}%;"></div>
+                <div class="stats-item">
+                    <div class="item-info">
+                        <div class="item-title">${task.title}</div>
+                        <div class="item-sub">
+                            <span class="badge badge-${status.class}">${status.text}</span>
+                            <span>Ответственный: ${task.assignedToName || 'Не назначен'}</span>
+                            <span>${new Date(task.createdAt).toLocaleDateString('ru-RU')}</span>
+                        </div>
                     </div>
                 </div>
             `;
         }).join('');
 
     } catch (error) {
-        console.error('Ошибка загрузки популярности:', error);
-        container.innerHTML = '<p style="color:#888;">❌ Ошибка загрузки данных</p>';
+        console.error('Ошибка:', error);
+        container.innerHTML = '<p style="text-align:center;color:#dc3545;">Ошибка загрузки</p>';
     }
 }
 
 // ============================================
-// 3. ДИНАМИКА ЗАПИСЕЙ ПО СОБЫТИЯМ
+// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 // ============================================
 
-async function loadEventStats(period) {
-    const container = document.getElementById('eventStatsList');
-
-    try {
-        const response = await fetch(`${API_URL}/statistics/events/registrations-stats?period=${period}`, {
-            headers: getHeaders()
-        });
-
-        if (!response.ok) throw new Error('Ошибка загрузки статистики событий');
-
-        const data = await response.json();
-
-        if (!data || data.length === 0) {
-            container.innerHTML = '<p style="color:#888;">Нет данных о записях на события</p>';
-            return;
-        }
-
-        container.innerHTML = data.map(item => `
-            <div class="stats-item">
-                <span class="label">${item.eventTitle || 'Без названия'}</span>
-                <span class="value">${item.registrationsCount || 0}</span>
-            </div>
-        `).join('');
-
-    } catch (error) {
-        console.error('Ошибка загрузки статистики событий:', error);
-        container.innerHTML = '<p style="color:#888;">❌ Ошибка загрузки данных</p>';
-    }
-}
-
-// ============================================
-// 4. НОВЫЕ ПОЛЬЗОВАТЕЛИ
-// ============================================
-
-async function loadUserRegistrations() {
-    const container = document.getElementById('userRegistrationsList');
-
-    try {
-        const response = await fetch(`${API_URL}/statistics/users/registrations`, {
-            headers: getHeaders()
-        });
-
-        if (!response.ok) throw new Error('Ошибка загрузки регистраций пользователей');
-
-        const data = await response.json();
-
-        if (!data || data.length === 0) {
-            container.innerHTML = '<p style="color:#888;">Нет данных о новых пользователях</p>';
-            return;
-        }
-
-        container.innerHTML = data.map(item => `
-            <div class="stats-item">
-                <span class="label">📅 ${item.month || 'Неизвестно'}</span>
-                <span class="value">👥 ${item.newUsersCount || 0}</span>
-            </div>
-        `).join('');
-
-    } catch (error) {
-        console.error('Ошибка загрузки регистраций пользователей:', error);
-        container.innerHTML = '<p style="color:#888;">Ошибка загрузки данных</p>';
-    }
-}
-
-function exportReport() {
-    alert('📄 Функция экспорта отчёта в PDF будет реализована позже');
+function getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
 }

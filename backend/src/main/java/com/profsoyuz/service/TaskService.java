@@ -7,6 +7,7 @@ import com.profsoyuz.model.User;
 import com.profsoyuz.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.profsoyuz.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +17,15 @@ import java.util.stream.Collectors;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final NotificationService notificationService;   // ✅ ДОБАВИТЬ
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository,
+                       UserRepository userRepository,
+                       NotificationService notificationService) {   // ✅ ДОБАВИТЬ
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+        this.notificationService = notificationService;   // ✅ ДОБАВИТЬ
     }
 
     public List<TaskDto> getAllTasksDto() {
@@ -46,17 +53,34 @@ public class TaskService {
     }
 
     @Transactional
-    public Task createTask(String title, String description, User assignedTo, User createdBy) {
+    public TaskDto createTask(String title, String description, Long assignedToId,
+                              LocalDateTime deadline, User createdBy) {
         Task task = new Task();
         task.setTitle(title);
         task.setDescription(description);
-        task.setAssignedTo(assignedTo);
         task.setCreatedBy(createdBy);
         task.setStatus(TaskStatus.PENDING);
         task.setCreatedAt(LocalDateTime.now());
         task.setUpdatedAt(LocalDateTime.now());
-        return taskRepository.save(task);
+        task.setDeadline(deadline);
+
+
+        Task saved = taskRepository.save(task);
+
+        // ✅ УВЕДОМЛЕНИЕ НАЗНАЧЕННОМУ
+        if (assignedToId != null) {
+            notificationService.createNotification(
+                    assignedToId,
+                    "task",
+                    "📌 Новая задача",
+                    title,
+                    "profile.html"
+            );
+        }
+
+        return convertToDto(saved);
     }
+
 
     @Transactional
     public Task updateTaskStatus(Long id, TaskStatus status) {
@@ -95,6 +119,7 @@ public class TaskService {
                 task.getAssignedTo() != null ? task.getAssignedTo().getId() : null,
                 task.getCreatedBy() != null ? task.getCreatedBy().getFullName() : null,
                 task.getCreatedBy() != null ? task.getCreatedBy().getId() : null,
+                task.getDeadline(),
                 task.getCreatedAt(),
                 task.getUpdatedAt()
         );

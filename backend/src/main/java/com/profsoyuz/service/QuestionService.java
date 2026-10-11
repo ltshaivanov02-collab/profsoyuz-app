@@ -17,10 +17,14 @@ import java.util.stream.Collectors;
 public class QuestionService {  // ← исправлено (без 's')
 
     private final QuestionRepository questionRepository;
+    private final NotificationService notificationService;
 
-    public QuestionService(QuestionRepository questionRepository) {
+    public QuestionService(QuestionRepository questionRepository, NotificationService notificationService) {
+        this.notificationService = notificationService;
         this.questionRepository = questionRepository;
     }
+
+
 
     public List<QuestionResponse> getAllQuestions() {
         return questionRepository.findAllByOrderByCreatedAtDesc()
@@ -56,18 +60,42 @@ public class QuestionService {  // ← исправлено (без 's')
         question.setStatus(QuestionStatus.PENDING);
         question.setCreatedAt(LocalDateTime.now());
 
-        return questionRepository.save(question);
+        Question saved = questionRepository.save(question);
+
+        // ✅ УВЕДОМЛЕНИЕ ВСЕМ ADMIN/BOSS
+        String preview = text.length() > 50 ? text.substring(0, 50) + "..." : text;
+        notificationService.createNotificationForAdmins(
+                "question",
+                "❓ Новый вопрос",
+                (user.getFullName() != null ? user.getFullName() : user.getUsername()) + ": " + preview,
+                "admin.html"
+        );
+
+        return saved;
     }
 
     @Transactional
-    public Question answerQuestion(Long questionId, String answer, User admin) {  // ← исправлено
-        Question question = getQuestionById(questionId);  // ← исправлено
+    public Question answerQuestion(Long questionId, String answer, User admin) {
+        Question question = getQuestionById(questionId);
+
         question.setAdminAnswer(answer);
         question.setAdmin(admin);
         question.setStatus(QuestionStatus.ANSWERED);
         question.setAnsweredAt(LocalDateTime.now());
 
-        return questionRepository.save(question);
+        Question saved = questionRepository.save(question);
+
+        // ✅ УВЕДОМЛЕНИЕ АВТОРУ
+        notificationService.createNotification(
+                question.getUser().getId(),
+                "question",
+                "💬 Ответ на ваш вопрос",
+                "Администратор ответил на ваш вопрос: \"" +
+                        (question.getText().length() > 50 ? question.getText().substring(0, 50) + "..." : question.getText()) + "\"",
+                "profile.html"
+        );
+
+        return saved;
     }
 
     public QuestionResponse convertToResponse(Question question) {

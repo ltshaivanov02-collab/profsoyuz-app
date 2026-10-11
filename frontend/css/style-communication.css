@@ -1,15 +1,19 @@
-/* ===== ОБЩИЙ КОНТЕЙНЕР ===== */
+/* ============================================
+   СТРАНИЦА ОБРАЩЕНИЙ
+   ============================================ */
+
+/* ===== ФОРМА ===== */
 .communication-wrapper {
     max-width: 100%;
 }
 
 .comm-subtitle {
-    color: #888;
     font-size: 14px;
+    color: #888888;
     margin-bottom: 20px;
 }
 
-/* ===== ВЫБОР ТИПА ОБРАЩЕНИЯ ===== */
+/* ===== ВЫБОР ТИПА ===== */
 .type-selector {
     display: flex;
     gap: 12px;
@@ -18,69 +22,74 @@
 
 .type-option {
     flex: 1;
-    padding: 14px 20px;
-    background: #f8f9fa;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: center;
-    font-weight: 500;
-}
-
-.type-option:hover {
-    border-color: #aaa;
-}
-
-.type-option.active {
-    border-color: #0f3460;
-    background: #e8edf5;
-}
-
-.type-option input[type="radio"] {
-    display: none;
-}
-
-.type-option span {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-size: 15px;
+    padding: 14px 20px;
+    background: #EBECED;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    color: #555555;
+    text-align: center;
 }
 
-.type-option i {
-    font-size: 22px;
+.type-option input {
+    display: none;
+}
+
+.type-option:hover {
+    background: #dde0e3;
+    color: #0070B8;
+}
+
+.type-option.active {
+    background: #0070B8;
+    color: #ffffff;
+    border-color: #0070B8;
 }
 
 /* ===== ФОРМА ===== */
+#communicationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .form-group {
-    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
     font-size: 14px;
-    color: #333;
+    font-weight: 500;
+    color: #000000;
 }
 
-.form-group input,
+.form-group input[type="text"],
 .form-group textarea {
     width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 12px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
     font-size: 14px;
-    transition: border 0.3s;
     font-family: inherit;
+    background: #ffffff;
+    color: #000000;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #0f3460;
     outline: none;
+    border-color: #0070B8;
+    box-shadow: 0 0 0 3px rgba(0, 112, 184, 0.1);
 }
 
 .form-group textarea {
@@ -88,31 +97,31 @@
     min-height: 120px;
 }
 
-/* ===== ФАЙЛ-ДРОП ===== */
+/* ===== ЗАГРУЗКА ФАЙЛА ===== */
 .file-drop {
-    position: relative;
-    padding: 30px 20px;
-    border: 2px dashed #ddd;
+    border: 2px dashed #C5C8CB;
     border-radius: 10px;
+    padding: 24px;
     text-align: center;
+    background: #EBECED;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .file-drop:hover {
-    border-color: #0f3460;
-    background: #f8f9fa;
-}
-
-.file-drop i {
-    font-size: 40px;
-    color: #0f3460;
+    border-color: #0070B8;
+    background: #e3efff;
 }
 
 .file-drop p {
-    color: #888;
-    font-size: 14px;
-    margin-top: 8px;
+    font-size: 13px;
+    color: #888888;
+    margin: 0;
+}
+
+.file-drop:hover p {
+    color: #0070B8;
 }
 
 .file-drop input[type="file"] {
@@ -122,88 +131,338 @@
     cursor: pointer;
 }
 
-.file-drop .file-name {
+.file-name {
     display: block;
     margin-top: 10px;
     font-size: 13px;
-    color: #0f3460;
+    color: #0070B8;
     font-weight: 500;
-}
-
-/* ===== СКРЫТИЕ ФАЙЛА ДЛЯ ВОПРОСА ===== */
-#fileGroup.hidden {
-    display: none;
-}
-
-/* ===== РЕЗУЛЬТАТ ===== */
-.result-area {
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    display: none;
-}
-
-.result-area.success {
-    display: block;
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.result-area.error {
-    display: block;
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.result-area.info {
-    display: block;
-    background: #cce5ff;
-    color: #004085;
-    border: 1px solid #b8daff;
-}
-
-/* ===== СТАТУСЫ В САЙДБАРЕ ===== */
-.status-badge {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-}
-
-.status-badge span {
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.badge-pending {
-    background: #f39c12;
-    color: #fff;
-}
-
-.badge-approved {
-    background: #28a745;
-    color: #fff;
-}
-
-.badge-rejected {
-    background: #dc3545;
-    color: #fff;
-}
-
-.badge-answered {
-    background: #0f3460;
-    color: #fff;
 }
 
 /* ===== КНОПКА ОТПРАВКИ ===== */
 #submitBtn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    justify-content: center;
+    padding: 14px 24px;
+    background: #0070B8;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    margin-top: 8px;
 }
+
+#submitBtn:hover {
+    background: #005a94;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 112, 184, 0.25);
+}
+
+/* ===== РЕЗУЛЬТАТ ===== */
+.result-area {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    margin-top: 12px;
+}
+
+.result-area.success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+    display: block;
+}
+
+.result-area.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+    display: block;
+}
+
+.result-area.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+    display: block;
+}
+
+/* ===== СКРЫТИЕ ===== */
+.form-group.hidden {
+    display: none;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 600px) {
+    .type-selector {
+        flex-direction: column;
+    }
+}
+
+/* ============================================
+   SIDEBAR — МОИ ОБРАЩЕНИЯ / МОИ ВОПРОСЫ
+   ============================================ */
+
+.sidebar {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    min-height: 400px;
+}
+
+.sidebar-content h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 12px 0;
+}
+
+.sidebar-content hr {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid #f0f0f0;
+}
+
+.sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* ===== ЭЛЕМЕНТ СПИСКА ===== */
+.sidebar-item {
+    background: #EBECED;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 3px solid #C5C8CB;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.sidebar-item:hover {
+    background: #dde0e3;
+    transform: translateX(4px) scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-left-color: #0070B8;
+}
+
+.sidebar-item-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.sidebar-item:hover .sidebar-item-title {
+    color: #0070B8;
+}
+
+.sidebar-item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #888888;
+    flex-wrap: wrap;
+}
+
+.sidebar-empty {
+    font-size: 13px;
+    color: #aaaaaa;
+    text-align: center;
+    padding: 12px 0;
+    margin: 0;
+}
+
+/* ===== СКРОЛЛБАР ===== */
+.sidebar-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-list::-webkit-scrollbar-track {
+    background: #EBECED;
+    border-radius: 3px;
+}
+
+.sidebar-list::-webkit-scrollbar-thumb {
+    background: #C5C8CB;
+    border-radius: 3px;
+}
+
+.sidebar-list::-webkit-scrollbar-thumb:hover {
+    background: #a8abae;
+}
+
+/* ============================================
+   ДЕТАЛИ ОБРАЩЕНИЯ (модалка)
+   ============================================ */
+
+.app-detail {
+    padding: 0;
+}
+
+/* ===== МЕТАДАННЫЕ (серая плашка) ===== */
+.app-detail-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 18px 20px;
+    background: #EBECED;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.app-detail-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.app-detail-meta-item .label {
+    color: #888888;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.app-detail-meta-item .value {
+    color: #000000;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* ===== СЕКЦИИ ===== */
+.app-detail-section {
+    padding: 18px 0;
+    border-top: 1px solid #f0f0f0;
+}
+
+.app-detail-section:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.app-detail-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 10px 0;
+}
+
+.app-detail-section p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+}
+
+/* ===== ОТВЕТ АДМИНИСТРАТОРА ===== */
+.app-detail-response {
+    background: #f0f7ff;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #0070B8;
+    margin-top: 20px;
+}
+
+.app-detail-response h3 {
+    color: #0070B8;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.app-detail-response p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333333;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* ===== ОЖИДАНИЕ (жёлтая плашка) ===== */
+.app-detail-pending {
+    background: #fef7e0;
+    padding: 16px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #ffc107;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.app-detail-pending p {
+    font-size: 14px;
+    color: #856404;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ===== БЕЙДЖ СТАТУСА ===== */
+.badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    width: fit-content;
+}
+
+.badge-pending {
+    background: #fef7e0;
+    color: #856404;
+}
+
+.badge-approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ===== КНОПКА PDF ===== */
+.document-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #0070B8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.document-link:hover {
+    background: #005a94;
+    transform: scale(1.03);
+}
+
+

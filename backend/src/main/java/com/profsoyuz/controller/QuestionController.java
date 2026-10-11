@@ -4,6 +4,7 @@ import com.profsoyuz.dto.QuestionResponse;
 import com.profsoyuz.model.Question;
 import com.profsoyuz.model.User;
 import com.profsoyuz.service.QuestionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +21,28 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+    // ============================================
+    // ПОЛУЧИТЬ ВСЕ ВОПРОСЫ
+    // ============================================
 
     @GetMapping
     public List<QuestionResponse> getAllQuestions() {
         return questionService.getAllQuestions();
     }
 
+    // ============================================
+    // ПОЛУЧИТЬ МОИ ВОПРОСЫ
+    // ============================================
+
     @GetMapping("/my")
     public List<QuestionResponse> getMyQuestions(@AuthenticationPrincipal UserDetails userDetails) {
         User user = (User) userDetails;
         return questionService.getQuestionsByUser(user.getId());
     }
+
+    // ============================================
+    // СОЗДАТЬ ВОПРОС
+    // ============================================
 
     @PostMapping
     public QuestionResponse createQuestion(@RequestBody CreateQuestionRequest request,
@@ -40,7 +52,12 @@ public class QuestionController {
         return questionService.convertToResponse(question);
     }
 
-    @PutMapping("/{id}/answer")
+    // ============================================
+    // ОТВЕТИТЬ НА ВОПРОС (ADMIN/BOSS)
+    // ============================================
+
+    @PutMapping("/{id:\\d+}/answer")
+    @PreAuthorize("hasAnyRole('ADMIN', 'BOSS')")
     public QuestionResponse answerQuestion(@PathVariable Long id,
                                            @RequestBody AnswerRequest request,
                                            @AuthenticationPrincipal UserDetails userDetails) {
@@ -49,17 +66,18 @@ public class QuestionController {
         return questionService.convertToResponse(question);
     }
 
+    // ============================================
+    // DTO
+    // ============================================
 
     public static class CreateQuestionRequest {
         private String text;
-
         public String getText() { return text; }
         public void setText(String text) { this.text = text; }
     }
 
     public static class AnswerRequest {
         private String answer;
-
         public String getAnswer() { return answer; }
         public void setAnswer(String answer) { this.answer = answer; }
     }

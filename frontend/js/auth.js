@@ -78,6 +78,31 @@ async function handleLogin(e) {
 }
 
 // ============================================
+// ПОКАЗ / СКРЫТИЕ ПАРОЛЯ
+// ============================================
+
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (!passwordInput || !toggleIcon) return;
+
+    if (passwordInput.type === 'password') {
+        // ✅ Показываем пароль
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('bx-show');
+        toggleIcon.classList.add('bx-hide');
+        toggleIcon.parentElement.setAttribute('aria-label', 'Скрыть пароль');
+    } else {
+        // ✅ Скрываем пароль
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('bx-hide');
+        toggleIcon.classList.add('bx-show');
+        toggleIcon.parentElement.setAttribute('aria-label', 'Показать пароль');
+    }
+}
+
+// ============================================
 // ВЫХОД
 // ============================================
 
@@ -111,15 +136,29 @@ function checkAuth() {
 
 function showNavigationByRole() {
     const role = localStorage.getItem('role');
+
+    // Десктоп
     const navAdmin = document.getElementById('navAdmin');
     const navStatistics = document.getElementById('navStatistics');
 
+    // Мобильные
+    const mobileNavAdmin = document.getElementById('mobileNavAdmin');
+    const mobileNavStatistics = document.getElementById('mobileNavStatistics');  // ✅ ДОБАВИТЬ
+
+    // --- Админка ---
     if (navAdmin) {
         navAdmin.style.display = (role === 'ADMIN' || role === 'BOSS') ? 'block' : 'none';
     }
+    if (mobileNavAdmin) {
+        mobileNavAdmin.style.display = (role === 'ADMIN' || role === 'BOSS') ? 'flex' : 'none';
+    }
 
+    // --- Статистика (только BOSS) ---
     if (navStatistics) {
         navStatistics.style.display = (role === 'BOSS') ? 'block' : 'none';
+    }
+    if (mobileNavStatistics) {
+        mobileNavStatistics.style.display = (role === 'BOSS') ? 'flex' : 'none';
     }
 }
 

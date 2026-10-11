@@ -1,220 +1,334 @@
-/* ===== ВИДЖЕТЫ ===== */
-.widgets-grid {
+/* ============================================
+   СТРАНИЦА СТАТИСТИКИ (BOSS)
+   ============================================ */
+
+/* ===== СЕТКА КАРТОЧЕК ===== */
+.stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
-    margin-bottom: 30px;
-}
-
-.widget {
-    background: #fff;
-    padding: 18px 16px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    transition: transform 0.3s;
-}
-
-.widget:hover {
-    transform: translateY(-2px);
-}
-
-.widget-icon {
-    font-size: 32px;
-    line-height: 1;
-}
-
-.widget-info {
-    flex: 1;
-}
-
-.widget-label {
-    display: block;
-    font-size: 12px;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.widget-info strong {
-    display: block;
-    font-size: 24px;
-    color: #1a1a2e;
-}
-
-/* ===== СЕКЦИИ СТАТИСТИКИ ===== */
-.stats-section {
-    background: #fff;
-    padding: 20px 24px;
-    border-radius: 12px;
     margin-bottom: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
 
-.stats-section h3 {
-    font-size: 18px;
-    color: #1a1a2e;
-    margin-bottom: 16px;
+.stat-card {
+    background: #EBECED;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border-left: 4px solid #C5C8CB;
+    cursor: pointer;
+    position: relative;
 }
 
-/* ===== СПИСОК СТАТИСТИКИ ===== */
+.stat-card:hover {
+    background: #dde0e3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-left-color: #0070B8;
+}
+
+.stat-card .stat-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #C5C8CB;
+    transition: color 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+    color: #0070B8;
+}
+
+.stat-card .stat-icon i {
+    font-size: 32px;
+}
+
+.stat-card .stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 4px;
+}
+
+.stat-card .stat-title {
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.stat-card .stat-sub {
+    font-size: 11px;
+    color: #888888;
+}
+
+/* ============================================
+   ФИЛЬТРЫ (ТАБЫ) В МОДАЛКАХ
+   ============================================ */
+
+.stats-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 6px;
+    background: #EBECED;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.stats-tab {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #555555;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    text-align: center;
+}
+
+.stats-tab:hover {
+    color: #0070B8;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.stats-tab.active {
+    color: #ffffff;
+    background: #0070B8;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 112, 184, 0.2);
+}
+
+/* ============================================
+   СПИСКИ В МОДАЛКАХ
+   ============================================ */
+
 .stats-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 .stats-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.stats-item .label {
-    font-size: 14px;
-    color: #555;
-}
-
-.stats-item .value {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a2e;
-}
-
-.stats-item .bar {
-    flex: 1;
-    height: 6px;
-    background: #e9ecef;
-    border-radius: 3px;
-    margin: 0 12px;
-    overflow: hidden;
-}
-
-.stats-item .bar-fill {
-    height: 100%;
-    background: #0f3460;
-    border-radius: 3px;
-    transition: width 0.5s ease;
-}
-
-/* ===== ПОПУЛЯРНОСТЬ ===== */
-.popularity-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.popularity-item {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    padding: 10px 14px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    padding: 14px 18px;
+    background: #EBECED;
+    border-radius: 10px;
+    border-left: 3px solid #C5C8CB;
+    transition: all 0.3s ease;
 }
 
-.popularity-item .rank {
-    font-weight: 700;
-    font-size: 16px;
-    color: #0f3460;
-    min-width: 30px;
+.stats-item:hover {
+    background: #dde0e3;
+    transform: translateX(4px);
+    border-left-color: #0070B8;
 }
 
-.popularity-item .name {
+.stats-item .item-info {
     flex: 1;
-    font-size: 14px;
-    color: #333;
+    min-width: 0;
 }
 
-.popularity-item .count {
+.stats-item .item-title {
     font-size: 14px;
     font-weight: 600;
-    color: #0f3460;
+    color: #000000;
+    margin-bottom: 4px;
 }
 
-.popularity-item .bar {
-    width: 120px;
-    height: 6px;
-    background: #e9ecef;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.popularity-item .bar-fill {
-    height: 100%;
-    background: #0f3460;
-    border-radius: 3px;
-    transition: width 0.5s ease;
-}
-
-/* ===== ВЫБОР ПЕРИОДА ===== */
-.period-selector {
+.stats-item .item-sub {
     display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: #666666;
 }
 
-.period-btn {
-    padding: 6px 16px;
-    background: #e9ecef;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.3s;
+.stats-item .item-actions {
+    flex-shrink: 0;
 }
 
-.period-btn:hover {
-    background: #ced4da;
+.stats-item .item-actions .btn {
+    padding: 6px 14px;
+    font-size: 12px;
 }
 
-.period-btn.active {
-    background: #0f3460;
-    color: #fff;
+/* ============================================
+   ТАБЛИЦА ЗАЯВЛЕНИЙ
+   ============================================ */
+
+.stats-table-wrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+    background: #ffffff;
 }
 
-/* ===== СВОДКА В САЙДБАРЕ ===== */
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
     font-size: 14px;
-    border-bottom: 1px solid #f0f0f0;
 }
 
-.summary-item:last-child {
+.stats-table thead {
+    background: #EBECED;
+    color: #000000;
+}
+
+.stats-table thead th {
+    padding: 14px 18px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.stats-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s ease;
+}
+
+.stats-table tbody tr:last-child {
     border-bottom: none;
 }
 
-.summary-item span {
-    color: #888;
+.stats-table tbody tr:hover {
+    background: #f8f9fa;
 }
 
-.summary-item strong {
-    color: #1a1a2e;
+.stats-table tbody td {
+    padding: 14px 18px;
+    color: #333333;
 }
 
-/* ===== ЭКСПОРТ ===== */
-.export-section {
-    margin-top: 12px;
+.stat-value-cell {
+    text-align: right;
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
 }
 
-.export-section .btn {
-    width: 100%;
-    justify-content: center;
+.stat-value-cell.approved {
+    color: #28a745;
 }
 
-/* ===== БЕЙДЖ РОЛИ ===== */
-.role-badge {
-    padding: 4px 14px;
-    background: #0f3460;
-    color: #fff;
-    border-radius: 20px;
-    font-size: 12px;
+.stat-value-cell.rejected {
+    color: #dc3545;
+}
+
+.stat-value-cell.pending {
+    color: #856404;
+}
+
+/* ============================================
+   БЕЙДЖИ
+   ============================================ */
+
+.badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 11px;
     font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.badge-pending { background: rgba(255, 193, 7, 0.2); color: #856404; }
+.badge-approved { background: rgba(40, 167, 69, 0.2); color: #155724; }
+.badge-rejected { background: rgba(220, 53, 69, 0.2); color: #721c24; }
+.badge-completed { background: rgba(40, 167, 69, 0.2); color: #155724; }
+.badge-in_progress { background: rgba(23, 162, 184, 0.2); color: #0c5460; }
+.badge-user { background: rgba(23, 162, 184, 0.2); color: #0c5460; }
+.badge-admin { background: rgba(0, 112, 184, 0.2); color: #005a94; }
+.badge-boss { background: rgba(255, 193, 7, 0.2); color: #856404; }
+
+/* ============================================
+   ПУСТОЕ СОСТОЯНИЕ
+   ============================================ */
+
+.stats-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888888;
+    font-size: 14px;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-card .stat-icon i {
+        font-size: 28px;
+    }
+
+    .stat-card .stat-number {
+        font-size: 24px;
+    }
+
+    .stats-tabs {
+        flex-direction: column;
+    }
+
+    .stats-tab {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .stats-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .stats-item .item-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .stat-card .stat-icon {
+        margin-bottom: 0;
+    }
+
+    .stat-card .stat-number {
+        font-size: 22px;
+    }
+
+    .stats-table thead th,
+    .stats-table tbody td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
 }

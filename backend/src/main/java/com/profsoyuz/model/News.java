@@ -16,7 +16,7 @@ public class News {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
     @ManyToOne
@@ -75,14 +75,6 @@ public class News {
         this.content = content;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public User getAuthor() {
         return author;
     }
@@ -107,6 +99,14 @@ public class News {
         this.updatedAt = updatedAt;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     // ============================================
     // toString()
     // ============================================
@@ -116,7 +116,9 @@ public class News {
         return "News{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
                 ", author=" + (author != null ? author.getUsername() : "null") +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }

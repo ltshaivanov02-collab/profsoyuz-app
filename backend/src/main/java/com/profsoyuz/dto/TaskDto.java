@@ -14,6 +14,7 @@ public class TaskDto {
     private Long assignedToId;
     private String createdByName;
     private Long createdById;
+    private LocalDateTime deadline;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -22,8 +23,8 @@ public class TaskDto {
 
     public TaskDto(Long id, String title, String description, TaskStatus status,
                    String assignedToName, Long assignedToId,
-                   String createdByName, Long createdById,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+                   String createdByName, Long createdById, LocalDateTime deadline,
+                   LocalDateTime createdAt, LocalDateTime updatedAt ) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -32,8 +33,10 @@ public class TaskDto {
         this.assignedToId = assignedToId;
         this.createdByName = createdByName;
         this.createdById = createdById;
+        this.deadline = deadline;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+
     }
 
     public Long getId() { return id; }
@@ -65,5 +68,8 @@ public class TaskDto {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public LocalDateTime getDeadline() { return deadline; }
+    public void setDeadline(LocalDateTime deadline) {this.deadline = deadline; }
 }
 

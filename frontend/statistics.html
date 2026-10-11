@@ -6,107 +6,306 @@
     <title>Статистика | Профсоюз</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/style-statistics.css">
+    <link rel="stylesheet" href="css/style-modal.css">
+    <link rel="stylesheet" href="css/style-header.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="wrapper">
+
+    <!-- ===== ШАПКА ===== -->
     <header class="header">
-        <span class="logo">📊 Профсоюз</span>
+        <span class="logo">Профсоюз</span>
         <div class="header-actions">
             <a href="profile.html" class="header-icon" title="Профиль">
                 <i class="bx bx-user-circle"></i>
             </a>
-            <a href="#" class="header-icon" title="Уведомления">
+            <a href="#" class="header-icon" title="Уведомления" onclick="openNotificationsModal(); return false;">
                 <i class="bx bx-bell"></i>
-                <span class="badge">3</span>
+                <span class="badge" id="notificationBadge" style="display:none;">0</span>
             </a>
-            <a href="#" class="header-icon" title="Настройки">
+            <a href="profile.html?openSettings=true" class="header-icon" title="Настройки">
                 <i class="bx bx-cog"></i>
             </a>
         </div>
     </header>
 
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
     <div class="grid">
+
+        <!-- ЛЕВАЯ КОЛОНКА -->
         <aside class="container">
             <nav class="navigation">
                 <ul>
-                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
-                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
-                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
-                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
-                    <li><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
-                    <li class="active"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
-                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="events.html">События</a></li>
+                    <li><a href="profile.html">Профиль</a></li>
+                    <li><a href="communication.html">Обращение</a></li>
+                    <li id="navAdmin" style="display:none;"><a href="admin.html">Админ-панель</a></li>
+                    <li class="active" id="navStatistics" style="display:none;"><a href="statistics.html">Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn">Выйти</a></li>
                 </ul>
             </nav>
         </aside>
 
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА -->
         <main class="main-content">
             <div class="page-header">
-                <h2>📊 Статистика</h2>
-                <span class="role-badge" id="roleBadge">BOSS</span>
+                <h2>Статистика</h2>
             </div>
 
-            <div class="widgets-grid">
-                <div class="widget"><div class="widget-icon">👥</div><div class="widget-info"><span class="widget-label">Пользователи</span><strong id="totalUsers">0</strong></div></div>
-                <div class="widget"><div class="widget-icon">📰</div><div class="widget-info"><span class="widget-label">Новости</span><strong id="totalNews">0</strong></div></div>
-                <div class="widget"><div class="widget-icon">📅</div><div class="widget-info"><span class="widget-label">События</span><strong id="totalEvents">0</strong></div></div>
-                <div class="widget"><div class="widget-icon">📋</div><div class="widget-info"><span class="widget-label">Заявки</span><strong id="totalApplications">0</strong></div></div>
-                <div class="widget"><div class="widget-icon">📌</div><div class="widget-info"><span class="widget-label">Задачи</span><strong id="totalTasks">0</strong></div></div>
-                <div class="widget"><div class="widget-icon">❓</div><div class="widget-info"><span class="widget-label">Вопросы</span><strong id="totalQuestions">0</strong></div></div>
-            </div>
+            <!-- ===== КАРТОЧКИ-РАЗДЕЛЫ ===== -->
+            <div class="stats-grid">
 
-            <section class="stats-section">
-                <h3>🏆 Популярность мероприятий</h3>
-                <div id="popularityList" class="popularity-list"><p style="color:#888;">Загрузка...</p></div>
-            </section>
-
-            <section class="stats-section">
-                <h3>📊 Динамика записей по событиям</h3>
-                <div class="period-selector">
-                    <button class="period-btn active" data-period="month">Месяц</button>
-                    <button class="period-btn" data-period="quarter">Квартал</button>
-                    <button class="period-btn" data-period="year">Год</button>
+                <!-- 1. ПОЛЬЗОВАТЕЛИ -->
+                <div class="stat-card" onclick="openUsersStats()">
+                    <div class="stat-icon">
+                        <i class="bx bx-group"></i>
+                    </div>
+                    <div class="stat-number" id="statUsersCount">0</div>
+                    <div class="stat-title">Пользователи</div>
+                    <div class="stat-sub">Нажмите для подробностей</div>
                 </div>
-                <div id="eventStatsList" class="stats-list"><p style="color:#888;">Загрузка...</p></div>
-            </section>
 
-            <section class="stats-section">
-                <h3>👥 Новые пользователи по месяцам</h3>
-                <div id="userRegistrationsList" class="stats-list"><p style="color:#888;">Загрузка...</p></div>
-            </section>
+                <!-- 2. СОБЫТИЯ -->
+                <div class="stat-card" onclick="openEventsStats()">
+                    <div class="stat-icon">
+                        <i class="bx bx-calendar"></i>
+                    </div>
+                    <div class="stat-number" id="statEventsCount">0</div>
+                    <div class="stat-title">События</div>
+                    <div class="stat-sub">Нажмите для подробностей</div>
+                </div>
+
+                <!-- 3. ЗАЯВЛЕНИЯ -->
+                <div class="stat-card" onclick="openApplicationsStats()">
+                    <div class="stat-icon">
+                        <i class="bx bx-file"></i>
+                    </div>
+                    <div class="stat-number" id="statApplicationsCount">0</div>
+                    <div class="stat-title">Заявления</div>
+                    <div class="stat-sub">Нажмите для подробностей</div>
+                </div>
+
+                <!-- 4. ЗАДАЧИ -->
+                <div class="stat-card" onclick="openTasksStats()">
+                    <div class="stat-icon">
+                        <i class="bx bx-task"></i>
+                    </div>
+                    <div class="stat-number" id="statTasksCount">0</div>
+                    <div class="stat-title">Задачи</div>
+                    <div class="stat-sub">Нажмите для подробностей</div>
+                </div>
+
+            </div>
         </main>
 
+        <!-- ПРАВАЯ КОЛОНКА -->
         <aside class="sidebar">
             <div class="sidebar-content">
-                <h3>📌 Фильтры</h3>
-                <div class="filter-group">
-                    <label>Период</label>
-                    <select id="periodSelect">
-                        <option value="month">За месяц</option>
-                        <option value="quarter">За квартал</option>
-                        <option value="year">За год</option>
-                    </select>
-                </div>
-                <hr>
-                <h3>📋 Сводка</h3>
-                <div id="summaryStats">
-                    <div class="summary-item"><span>Всего пользователей:</span><strong id="summaryUsers">0</strong></div>
-                    <div class="summary-item"><span>Всего новостей:</span><strong id="summaryNews">0</strong></div>
-                    <div class="summary-item"><span>Всего событий:</span><strong id="summaryEvents">0</strong></div>
-                    <div class="summary-item"><span>Заявок в обработке:</span><strong id="summaryPendingApps">0</strong></div>
-                    <div class="summary-item"><span>Вопросов без ответа:</span><strong id="summaryPendingQuestions">0</strong></div>
-                </div>
-                <hr>
-                <div class="export-section">
-                    <button onclick="exportReport()" class="btn btn-primary"><i class="bx bx-download"></i> Скачать отчёт (PDF)</button>
+                <h3>Краткая сводка</h3>
+                <div class="admin-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Одобрено заявок</span>
+                        <span class="stat-value" id="statApprovedApps">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Отклонено</span>
+                        <span class="stat-value" id="statRejectedApps">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Активных задач</span>
+                        <span class="stat-value" id="statActiveTasks">0</span>
+                    </div>
                 </div>
             </div>
         </aside>
+
     </div>
 </div>
 
+<!-- ============================================ -->
+<!-- МОДАЛКИ                                      -->
+<!-- ============================================ -->
+
+<!-- МОДАЛКА: СТАТИСТИКА ПОЛЬЗОВАТЕЛЕЙ -->
+<div id="usersStatsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Статистика пользователей</h2>
+            <button class="modal-close" onclick="Modal.close('usersStatsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Фильтр -->
+            <div class="stats-tabs">
+                <button class="stats-tab active" onclick="filterUsers('all', this)">Все пользователи</button>
+                <button class="stats-tab" onclick="filterUsers('new', this)">Появились в этом месяце</button>
+            </div>
+
+            <!-- Список -->
+            <div id="usersStatsList" class="stats-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('usersStatsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: СТАТИСТИКА СОБЫТИЙ -->
+<div id="eventsStatsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Статистика событий</h2>
+            <button class="modal-close" onclick="Modal.close('eventsStatsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="stats-tabs">
+                <button class="stats-tab active" onclick="filterEvents('all', this)">Все события</button>
+                <button class="stats-tab" onclick="filterEvents('popular', this)">Самые посещаемые</button>
+                <button class="stats-tab" onclick="filterEvents('liked', this)">Самые залайканные</button>
+            </div>
+
+            <div id="eventsStatsList" class="stats-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('eventsStatsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: УЧАСТНИКИ СОБЫТИЯ -->
+<div id="eventParticipantsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2><span id="eventParticipantsTitle">Участники события</span></h2>
+            <button class="modal-close" onclick="Modal.close('eventParticipantsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="eventParticipantsList" class="stats-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('eventParticipantsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: СТАТИСТИКА ЗАЯВЛЕНИЙ -->
+<div id="applicationsStatsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Статистика заявлений</h2>
+            <button class="modal-close" onclick="Modal.close('applicationsStatsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Таблица -->
+            <div class="stats-table-wrapper">
+                <table class="stats-table">
+                    <thead>
+                    <tr>
+                        <th>Показатель</th>
+                        <th>Количество</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Всего заявлений</td>
+                        <td class="stat-value-cell" id="appsTotal">0</td>
+                    </tr>
+                    <tr>
+                        <td>Одобрено</td>
+                        <td class="stat-value-cell approved" id="appsApproved">0</td>
+                    </tr>
+                    <tr>
+                        <td>Отклонено</td>
+                        <td class="stat-value-cell rejected" id="appsRejected">0</td>
+                    </tr>
+                    <tr>
+                        <td>В обработке</td>
+                        <td class="stat-value-cell pending" id="appsPending">0</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('applicationsStatsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: СТАТИСТИКА ЗАДАЧ -->
+<div id="tasksStatsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Статистика задач</h2>
+            <button class="modal-close" onclick="Modal.close('tasksStatsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="tasksStatsList" class="stats-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('tasksStatsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: УВЕДОМЛЕНИЯ -->
+<div id="notificationsModal">
+    <div class="notifications-panel">
+        <div class="notifications-header">
+            <h2>Уведомления</h2>
+            <div class="notifications-header-actions">
+                <button class="notifications-clear-btn" onclick="clearAllNotifications()">Очистить</button>
+                <button class="notifications-close" onclick="document.getElementById('notificationsModal').classList.remove('active'); document.body.style.overflow='';">&times;</button>
+            </div>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+            <p style="text-align:center;color:#888;padding:20px;">Загрузка...</p>
+        </div>
+    </div>
+</div>
+
+<nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item" data-page="index">
+        <img src="images/home.svg" alt="Главная" class="mobile-nav-icon">
+        <span>Главная</span>
+    </a>
+    <a href="events.html" class="mobile-nav-item" data-page="events">
+        <img src="images/calendar.svg" alt="События" class="mobile-nav-icon">
+        <span>События</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item active" data-page="profile">
+        <img src="images/profile.svg" alt="Профиль" class="mobile-nav-icon">
+        <span>Профиль</span>
+    </a>
+    <a href="communication.html" class="mobile-nav-item" data-page="communication">
+        <img src="images/message.svg" alt="Обращение" class="mobile-nav-icon">
+        <span>Обращение</span>
+    </a>
+    <a href="admin.html" class="mobile-nav-item" data-page="admin" id="mobileNavAdmin" style="display:none;">
+        <img src="images/settings1.svg" alt="Админ" class="mobile-nav-icon">
+        <span>Админ</span>
+    </a>
+    <a href="statistics.html" class="mobile-nav-item" data-page="statistics" id="mobileNavStatistics" style="display:none;">
+        <img src="images/settings1.svg" alt="Статистика" class="mobile-nav-icon">
+        <span>Статистика</span>
+    </a>
+</nav>
+
+<!-- ПОДКЛЮЧЕНИЕ JS -->
 <script src="js/auth.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/header.js"></script>
 <script src="js/statistics.js"></script>
+
 </body>
 </html>

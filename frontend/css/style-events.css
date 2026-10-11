@@ -1,24 +1,38 @@
-/* ============================================
-   СТИЛИ ДЛЯ СТРАНИЦЫ СОБЫТИЙ
-   ============================================ */
+/* ===== ЗАГОЛОВОК ===== */
+.page-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
 
-/* ============================================
-   КАРТОЧКА СОБЫТИЯ
-   ============================================ */
+.page-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0;
+}
 
+/* ===== СПИСОК СОБЫТИЙ ===== */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ===== КАРТОЧКА СОБЫТИЯ ===== */
 .event-card {
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
     padding: 0;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
-    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    border: 1px solid #f0f0f0;
 }
 
 .event-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 112, 184, 0.12);
+    border-color: rgba(0, 112, 184, 0.2);
     transform: translateY(-2px);
 }
 
@@ -27,7 +41,7 @@
     width: 100%;
     height: 220px;
     overflow: hidden;
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: #EBECED;
     position: relative;
 }
 
@@ -46,13 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #28a745, #20c997);
-}
-
-.card-image.no-image::before {
-    content: '📅';
-    font-size: 64px;
-    opacity: 0.3;
+    background: #EBECED;
 }
 
 /* ===== СТАТУС НА ИЗОБРАЖЕНИИ ===== */
@@ -67,34 +75,23 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(4px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.event-status.upcoming {
-    color: #155724;
-}
-
-.event-status.ongoing {
-    color: #004085;
-}
-
-.event-status.past {
-    color: #721c24;
-}
-
-.event-status.fully-booked {
-    color: #721c24;
-}
+.event-status.upcoming { color: #155724; }
+.event-status.ongoing { color: #004085; }
+.event-status.past { color: #721c24; }
+.event-status.fully-booked { color: #856404; }
 
 /* ===== ЗАГОЛОВОК ===== */
 .event-card h3 {
     font-size: 18px;
-    color: #1a1a2e;
+    font-weight: 600;
+    color: #000000;
     padding: 16px 20px 8px 20px;
     margin: 0;
-    font-weight: 600;
     line-height: 1.4;
 }
 
@@ -115,13 +112,12 @@
 }
 
 .card-text-content p {
-    color: #555;
+    color: #333333;
     font-size: 14px;
     line-height: 1.6;
     margin: 0;
 }
 
-/* ===== ГРАДИЕНТ (эффект обрезки) ===== */
 .card-text-content:not(.expanded)::after {
     content: '';
     position: absolute;
@@ -129,7 +125,7 @@
     left: 0;
     right: 0;
     height: 30px;
-    background: linear-gradient(to bottom, transparent, #fff);
+    background: linear-gradient(to bottom, transparent, #ffffff);
     pointer-events: none;
 }
 
@@ -138,28 +134,21 @@
     display: inline-block;
     background: none;
     border: none;
-    color: #28a745;
-    font-size: 13px;
-    font-weight: 600;
+    color: #888888;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
     cursor: pointer;
-    padding: 4px 0;
-    transition: all 0.3s ease;
+    padding: 6px 0 4px 0;
+    transition: color 0.3s ease;
     font-family: inherit;
 }
 
 .read-more-btn:hover {
-    color: #218838;
+    color: #555555;
 }
 
-.read-more-btn.expanded {
-    color: #888;
-}
-
-.read-more-btn.expanded:hover {
-    color: #555;
-}
-
-/* ===== ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ===== */
+/* ===== ИНФОРМАЦИЯ О СОБЫТИИ ===== */
 .event-info {
     padding: 8px 20px 0 20px;
     display: flex;
@@ -172,12 +161,12 @@
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #555;
+    color: #555555;
 }
 
 .event-info-item i {
     font-size: 16px;
-    color: #28a745;
+    color: #888888;
     width: 20px;
     text-align: center;
 }
@@ -202,92 +191,192 @@
 
 .event-card .actions button {
     padding: 6px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid #e5e5e5;
     border-radius: 20px;
-    background: transparent;
+    background: #ffffff;
     cursor: pointer;
     font-size: 13px;
+    color: #333333;
     transition: all 0.3s ease;
     font-family: inherit;
 }
 
 .event-card .actions button:hover {
-    background: #f0f2f5;
+    background: #EBECED;
+    border-color: #C5C8CB;
+    color: #333333;
+    transform: scale(1.05);
 }
 
 /* ===== КНОПКА ЗАПИСИ ===== */
 .register-btn {
-    background: #28a745 !important;
-    color: #fff !important;
+    background: #0070B8 !important;
+    color: #ffffff !important;
     border: none !important;
 }
 
 .register-btn:hover {
-    background: #218838 !important;
+    background: #005a94 !important;
+    transform: scale(1.05);
 }
 
 .register-btn:disabled {
-    background: #6c757d !important;
+    background: #C5C8CB !important;
     cursor: not-allowed;
-}
-
-.register-btn:disabled:hover {
-    background: #6c757d !important;
-}
-
-/* ===== КНОПКА ПРОВЕРКИ ===== */
-.btn-secondary {
-    background: #f0f2f5;
-    border: 1px solid #ddd !important;
-}
-
-.btn-secondary:hover {
-    background: #e9ecef !important;
 }
 
 /* ===== КНОПКА ЗАКЛАДКИ ===== */
 .bookmark-btn {
     background: transparent !important;
-    border: 1px solid #ddd !important;
+    border: 1px solid #e5e5e5 !important;
 }
 
 .bookmark-btn:hover {
-    background: #fff3cd !important;
-    border-color: #ffc107 !important;
+    background: #EBECED !important;
+    border-color: #C5C8CB !important;
+    color: #333333 !important;
 }
 
-.bookmark-btn.active {
-    background: #fff3cd !important;
-    border-color: #ffc107 !important;
-}
-
-/* ===== ПУСТОЙ СПИСОК ===== */
+/* ===== ПУСТОЕ СОСТОЯНИЕ ===== */
 .empty-events {
     text-align: center;
     padding: 60px 20px;
-    color: #888;
+    color: #888888;
     font-size: 16px;
 }
 
-.empty-events i {
-    font-size: 48px;
-    color: #ddd;
-    display: block;
-    margin-bottom: 12px;
+.empty-events p {
+    margin: 8px 0;
 }
 
-/* ===== ЗАГОЛОВОК СТРАНИЦЫ ===== */
-.page-header h2 {
-    position: relative;
+.empty-events p:first-child {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
 }
 
-.page-header h2::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: #28a745;
-    border-radius: 2px;
+/* ============================================
+   КОММЕНТАРИИ
+   ============================================ */
+
+.comments-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 8px;
 }
+
+.comment-item {
+    background: #EBECED;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.comment-header strong {
+    color: #000000;
+    font-weight: 600;
+}
+
+.comment-header span {
+    color: #888888;
+    font-size: 11px;
+}
+
+.comment-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    box-sizing: border-box;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    border-color: #0070B8;
+    box-shadow: 0 0 0 3px rgba(0, 112, 184, 0.1);
+}
+
+.comment-form .btn {
+    align-self: flex-end;
+}
+
+/* ===== КНОПКИ В КАРТОЧКЕ СОБЫТИЯ ===== */
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid #e5e5e5;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333333;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.action-btn:hover {
+    background: #EBECED;
+    border-color: #C5C8CB;
+}
+
+.action-btn i {
+    font-size: 16px;
+}
+
+/* Активная реакция (сердечко) */
+.reaction-btn.active {
+    color: #dc3545;
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.reaction-btn.active i {
+    color: #dc3545;
+}
+
+/* Активная закладка */
+.bookmark-btn.active {
+    color: #ffc107;
+    border-color: #ffc107;
+    background: rgba(255, 193, 7, 0.05);
+}
+
+.bookmark-btn.active i {
+    color: #ffc107;
+}
+
+
+
+

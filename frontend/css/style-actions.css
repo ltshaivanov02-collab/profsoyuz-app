@@ -1,0 +1,98 @@
+/* ============================================
+   КНОПКИ ДЕЙСТВИЙ НА КАРТОЧКАХ
+   ============================================ */
+
+.card .actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px 20px 16px 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ===== БАЗОВАЯ КНОПКА ===== */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid #e5e5e5;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #888888;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.action-btn i {
+    font-size: 18px;
+    line-height: 1;
+    color: inherit;
+}
+
+.action-btn span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    color: #0070B8;
+    border-color: #0070B8;
+    background: #f0f7ff;
+    transform: scale(1.05);
+}
+
+/* ===== АКТИВНАЯ РЕАКЦИЯ ===== */
+.action-btn.reaction-btn.active {
+    color: #dc3545;
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ===== АКТИВНАЯ ЗАКЛАДКА ===== */
+.action-btn.bookmark-btn.active {
+    color: #ffc107;
+    border-color: #ffc107;
+    background: rgba(255, 193, 7, 0.1);
+}
+
+/* ===== УДАЛЕНИЕ ===== */
+.action-btn.danger-btn {
+    padding: 6px 10px;
+}
+
+.action-btn.danger-btn:hover {
+    color: #dc3545;
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ===== КНОПКА ЗАПИСИ ===== */
+.register-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: #0070B8;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    margin-left: auto;
+}
+
+.register-btn:hover {
+    background: #005a94;
+    transform: scale(1.05);
+}
+
+.register-btn:disabled {
+    background: #C5C8CB;
+    cursor: not-allowed;
+}

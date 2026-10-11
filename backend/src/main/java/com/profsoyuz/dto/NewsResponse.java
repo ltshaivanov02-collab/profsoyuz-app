@@ -12,11 +12,9 @@ public class NewsResponse {
     private LocalDateTime updatedAt;
     private String authorName;
 
-    private long likesCount;
     private long heartsCount;
-    private long firesCount;
-    private long clapsCount;
     private long totalReactionsCount;
+    private Integer commentsCount;
 
 
     public NewsResponse() {
@@ -90,14 +88,6 @@ public class NewsResponse {
         this.authorName = authorName;
     }
 
-    public long getLikesCount() {
-        return likesCount;
-    }
-
-    public void setLikesCount(long likesCount) {
-        this.likesCount = likesCount;
-    }
-
     public long getHeartsCount() {
         return heartsCount;
     }
@@ -106,27 +96,19 @@ public class NewsResponse {
         this.heartsCount = heartsCount;
     }
 
-    public long getFiresCount() {
-        return firesCount;
-    }
-
-    public void setFiresCount(long firesCount) {
-        this.firesCount = firesCount;
-    }
-
-    public long getClapsCount() {
-        return clapsCount;
-    }
-
-    public void setClapsCount(long clapsCount) {
-        this.clapsCount = clapsCount;
-    }
-
     public long getTotalReactionsCount() {
         return totalReactionsCount;
     }
 
     public void setTotalReactionsCount(long totalReactionsCount) {
         this.totalReactionsCount = totalReactionsCount;
+    }
+
+    public Integer getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(Integer commentsCount) {
+        this.commentsCount = commentsCount;
     }
 }

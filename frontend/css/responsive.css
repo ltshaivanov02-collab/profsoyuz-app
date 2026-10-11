@@ -1,0 +1,1002 @@
+/* ============================================
+   АДАПТАЦИЯ ПОД РАЗНЫЕ ЭКРАНЫ
+   ============================================ */
+
+/* ============================================
+   1. МОБИЛЬНАЯ НАВИГАЦИЯ (НИЖНЯЯ ПАНЕЛЬ)
+   ============================================ */
+
+.mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #ffffff;
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 900;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 8px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mobile-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: #888888;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-family: inherit;
+    padding: 0;
+}
+
+/* ✅ SVG-иконки через <img> */
+.mobile-nav-icon {
+    display: block;
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    transition: filter 0.3s ease, transform 0.3s ease;
+
+    /* По умолчанию — серый #888888 */
+    filter: brightness(0) saturate(100%)
+            invert(53%) sepia(0%) saturate(0%)
+            hue-rotate(0deg) brightness(92%) contrast(88%);
+}
+
+/* Hover — синий */
+.mobile-nav-item:hover .mobile-nav-icon {
+    filter: brightness(0) saturate(100%)
+            invert(33%) sepia(89%) saturate(2529%)
+            hue-rotate(185deg) brightness(93%) contrast(101%);
+}
+
+/* ✅ Active — СИНЯЯ + увеличение */
+.mobile-nav-item.active .mobile-nav-icon {
+    filter: brightness(0) saturate(100%)
+            invert(33%) sepia(89%) saturate(2529%)
+            hue-rotate(185deg) brightness(93%) contrast(101%);
+    transform: scale(1.15);
+}
+
+/* ✅ СКРЫВАЕМ ТЕКСТ ПОД ИКОНКАМИ */
+.mobile-nav-item span {
+    display: none;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item.active {
+    color: #0070B8;
+}
+/* ============================================
+   2. ПЛАНШЕТ 770-1024px
+   ============================================ */
+
+@media (max-width: 1024px) and (min-width: 769px) {
+
+    .grid {
+        gap: 16px;
+    }
+
+    .container {
+        display: block;
+        flex: 0 0 22%;
+        width: auto;
+        min-height: auto;
+    }
+
+    .main-content {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    /* --- ВИДЖЕТЫ АДМИНКИ --- */
+    .admin-widgets {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .widget-item {
+        background: #ffffff;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+
+    .widget-item:active {
+        transform: scale(0.97);
+    }
+
+    .widget-item:hover {
+        border-color: #0070B8;
+        box-shadow: 0 4px 12px rgba(0, 112, 184, 0.12);
+    }
+
+    .widget-icon i {
+        font-size: 36px;
+        color: #C5C8CB;
+        transition: color 0.3s ease;
+    }
+
+    .widget-item:hover .widget-icon i {
+        color: #0070B8;
+    }
+
+    .widget-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #000000;
+        text-align: center;
+    }
+
+    .widget-count {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: #0070B8;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 600;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 8px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-tabs {
+        display: none;
+    }
+
+    .admin-section {
+        display: none;
+    }
+
+    .admin-section.active {
+        display: block;
+    }
+
+    .admin-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: #EBECED;
+        color: #000000;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .admin-back-btn:hover {
+        background: #dde0e3;
+        color: #0070B8;
+    }
+
+    .admin-back-btn i {
+        font-size: 18px;
+    }
+
+    .mobile-nav {
+        display: none;
+    }
+
+    .card-image {
+        height: 200px;
+    }
+}
+
+/* ============================================
+   3. МОБИЛЬНЫЙ (< 768px)
+   ============================================ */
+
+@media (max-width: 768px) {
+
+    /* --- ПОКАЗЫВАЕМ НИЖНЮЮ НАВИГАЦИЮ --- */
+    .mobile-nav {
+        display: flex;
+    }
+
+    /* --- СКРЫВАЕМ БОКОВУЮ НАВИГАЦИЮ И SIDEBAR --- */
+    .container {
+        display: none;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    /* --- ОТСТУП СНИЗУ ДЛЯ КОНТЕНТА --- */
+    body {
+        padding-bottom: 72px;
+    }
+
+    .wrapper {
+        padding: 86px 12px 84px 12px;
+    }
+
+    /* ============================================
+       ШАПКА — МОБИЛЬНАЯ ВЕРСИЯ
+       ============================================ */
+
+    .header {
+        position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 24px);
+                max-width: 1422px;
+                z-index: 1000;
+
+                padding: 10px 16px;
+                border-radius: 10px;
+                margin-bottom: 0;
+                flex-wrap: nowrap;
+    }
+
+    .header .logo {
+        font-size: 18px;
+    }
+
+    .header-actions {
+        gap: 12px;
+        align-items: center;
+    }
+
+    /* ✅ СКРЫВАЕМ ПРОФИЛЬ И НАСТРОЙКИ */
+    .header-actions .header-icon[href="profile.html"]:not([href*="openSettings"]),
+    .header-actions .header-icon[href*="openSettings"] {
+        display: none;
+    }
+
+    /* ✅ ИКОНКА УВЕДОМЛЕНИЙ */
+    .header-actions .header-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        overflow: visible;
+    }
+
+    .header-actions .header-icon i {
+        font-size: 28px;
+    }
+
+    /* ✅ БЕЙДЖ */
+    .header-actions .header-icon .badge {
+        position: absolute;
+        top: -4px;
+        right: -2px;
+        transform: none;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        border-radius: 10px;
+        background: #dc3545;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #ffffff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    /* --- ОСНОВНОЙ КОНТЕНТ --- */
+    .main-content {
+        padding: 16px;
+        border-radius: 10px;
+        width: 100%;
+    }
+
+    /* --- ЗАГОЛОВКИ --- */
+    .page-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .page-header h2 {
+        font-size: 20px;
+    }
+
+    /* --- КАРТОЧКИ НОВОСТЕЙ --- */
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-image {
+        height: 180px;
+    }
+
+    .card h3 {
+        font-size: 16px;
+        padding: 12px 16px 6px 16px;
+    }
+
+    .card-text {
+        padding: 0 16px 6px 16px;
+    }
+
+    .card .meta {
+        padding: 6px 16px 0 16px;
+        font-size: 11px;
+    }
+
+    .card .actions {
+        padding: 8px 16px 12px 16px;
+        gap: 6px;
+    }
+
+    .card .actions button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    /* --- ВИДЖЕТЫ АДМИНКИ --- */
+    .admin-widgets {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .widget-item {
+        background: #ffffff;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+
+    .widget-item:active {
+        transform: scale(0.97);
+    }
+
+    .widget-icon i {
+        font-size: 36px;
+        color: #C5C8CB;
+    }
+
+    .widget-item:hover .widget-icon i {
+        color: #0070B8;
+    }
+
+    .widget-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #000000;
+        text-align: center;
+    }
+
+    .widget-count {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: #0070B8;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 600;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 8px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* --- АДМИНКА --- */
+    .admin-tabs {
+        display: none;
+    }
+
+    .admin-section {
+        display: none;
+    }
+
+    .admin-section.active {
+        display: block;
+    }
+
+    .admin-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: #EBECED;
+        color: #000000;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .admin-back-btn:hover {
+        background: #dde0e3;
+        color: #0070B8;
+    }
+
+    .admin-back-btn i {
+        font-size: 18px;
+    }
+
+    .admin-card {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .admin-card .actions {
+        justify-content: flex-end;
+    }
+
+    .admin-tab-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .admin-tab-header .btn {
+        width: 100%;
+    }
+
+    /* --- ПРОФИЛЬ --- */
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+        padding: 20px 16px;
+    }
+
+    .profile-menu {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .menu-item {
+        padding: 16px 12px;
+    }
+
+    .menu-icon {
+        font-size: 32px;
+    }
+
+    /* --- КАЛЕНДАРЬ --- */
+    .calendar-grid .day {
+        padding: 8px 2px;
+        font-size: 12px;
+    }
+
+    .calendar-grid .day-name {
+        padding: 6px 2px;
+        font-size: 10px;
+    }
+
+    /* --- МОДАЛКИ --- */
+    .modal-container {
+        max-width: 95%;
+        max-height: 90vh;
+    }
+
+    .modal-container.modal-lg,
+    .modal-container.modal-xl {
+        max-width: 95%;
+    }
+
+    .modal-header {
+        padding: 16px 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 18px;
+    }
+
+    .modal-body {
+        padding: 16px 20px;
+    }
+
+    .modal-footer {
+        padding: 12px 20px;
+        flex-wrap: wrap;
+    }
+
+    .modal-footer .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    /* --- ФОРМЫ --- */
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* --- ТИПЫ ОБРАЩЕНИЙ --- */
+    .type-selector {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .type-option {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+
+    /* --- ТАБЛИЦЫ --- */
+    .event-registrations-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .event-registrations-table {
+        font-size: 13px;
+        min-width: 600px;
+    }
+
+    .event-registrations-table th,
+    .event-registrations-table td {
+        padding: 10px 12px;
+    }
+}
+
+/* ============================================
+   4. МОБИЛЬНЫЙ (< 480px)
+   ============================================ */
+
+@media (max-width: 480px) {
+
+    .wrapper {
+        padding: 76px 8px 80px 8px;
+    }
+
+    .header {
+         top: 8px;
+         width: calc(100% - 16px);
+         padding: 8px 12px;
+         border-radius: 8px;
+         margin-bottom: 0;
+    }
+
+    .header .logo {
+        font-size: 16px;
+    }
+
+    .header-actions {
+        gap: 12px;
+    }
+
+    /* ✅ ИКОНКА УВЕДОМЛЕНИЙ */
+    .header-actions .header-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header-actions .header-icon i {
+        font-size: 26px;
+    }
+
+    /* ✅ БЕЙДЖ */
+    .header-actions .header-icon .badge {
+        top: -3px;
+        right: -2px;
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+        padding: 0 5px;
+        border-radius: 9px;
+    }
+
+    .main-content {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .page-header h2 {
+        font-size: 18px;
+    }
+
+    /* --- КАРТОЧКИ --- */
+    .card-image {
+        height: 150px;
+    }
+
+    .card h3 {
+        font-size: 15px;
+        padding: 10px 12px 4px 12px;
+    }
+
+    .card-text {
+        padding: 0 12px 4px 12px;
+    }
+
+    .card-text-content p {
+        font-size: 13px;
+    }
+
+    /* --- ПРОФИЛЬ --- */
+    .profile-avatar img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-menu {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .menu-item {
+        padding: 12px 8px;
+    }
+
+    .menu-icon {
+        font-size: 28px;
+    }
+
+    .menu-label {
+        font-size: 11px;
+    }
+
+    /* --- КАЛЕНДАРЬ --- */
+    .calendar-grid .day {
+        padding: 6px 2px;
+        font-size: 11px;
+    }
+
+    /* --- МОДАЛКИ --- */
+    .modal-container {
+        max-width: 100%;
+        width: 100%;
+        max-height: 100vh;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-container.modal-lg,
+    .modal-container.modal-xl {
+        max-width: 100%;
+    }
+
+    /* --- НИЖНЯЯ НАВИГАЦИЯ --- */
+    .mobile-nav {
+        height: 60px;
+    }
+
+    .mobile-nav-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    /* --- КНОПКИ --- */
+    .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    /* --- АДМИНКА --- */
+    .admin-card {
+        padding: 12px 14px;
+    }
+
+    .admin-card .info strong {
+        font-size: 14px;
+    }
+
+    .admin-card .sub {
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    /* --- ВИДЖЕТЫ --- */
+    .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .widget-item {
+        padding: 16px 8px;
+        gap: 6px;
+    }
+
+    .widget-icon i {
+        font-size: 28px;
+    }
+
+    .widget-label {
+        font-size: 11px;
+    }
+
+    .widget-count {
+        min-width: 20px;
+        height: 20px;
+        font-size: 10px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .login-wrapper {
+            padding: 16px;
+        }
+
+        .login-form {
+            padding: 16px;
+            gap: 16px;
+        }
+
+        .login-logo {
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            width: 180px;
+            height: 180px;
+        }
+
+        .input-box input {
+            height: 52px;
+            font-size: 14px;
+            padding: 0 18px;
+        }
+
+        .input-box input::placeholder {
+            font-size: 14px;
+        }
+
+        .login-form .btn {
+            height: 52px;
+            font-size: 15px;
+        }
+}
+
+/* ============================================
+   5. МОБИЛЬНЫЙ МАЛЕНЬКИЙ (< 360px)
+   ============================================ */
+
+@media (max-width: 360px) {
+
+    .wrapper {
+        padding: 72px 6px 76px 6px;
+    }
+
+    .header {
+            top: 8px;
+            width: calc(100% - 12px);
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-bottom: 0;
+        }
+
+    .header .logo {
+            font-size: 14px;
+    }
+
+    .header-actions {
+        gap: 8px;
+    }
+
+    /* ✅ ИКОНКА УВЕДОМЛЕНИЙ */
+    .header-actions .header-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-actions .header-icon i {
+        font-size: 24px;
+    }
+
+    /* ✅ БЕЙДЖ */
+    .header-actions .header-icon .badge {
+        top: -3px;
+        right: -2px;
+        min-width: 16px;
+        height: 16px;
+        font-size: 9px;
+        padding: 0 4px;
+        border-radius: 8px;
+    }
+
+    /* ✅ НИЖНЯЯ НАВИГАЦИЯ */
+    .mobile-nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .profile-menu {
+        grid-template-columns: 1fr;
+    }
+
+    .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .login-wrapper {
+            padding: 12px;
+        }
+
+        .login-form {
+            padding: 12px;
+            gap: 14px;
+        }
+
+        .login-logo {
+            margin-bottom: 20px;
+        }
+
+        .login-logo img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .input-box input {
+            height: 48px;
+            font-size: 13px;
+        }
+
+        .input-box input::placeholder {
+            font-size: 13px;
+        }
+
+        .login-form .btn {
+            height: 48px;
+            font-size: 14px;
+        }
+}
+
+/* ============================================
+   6. ТАЧ-УСТРОЙСТВА
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+
+    .btn,
+    .tab-btn,
+    .header-icon,
+    .menu-item,
+    .mobile-nav-item,
+    .sidebar-item,
+    .card .actions button,
+    .widget-item {
+        min-height: 44px;
+    }
+
+    .card:hover,
+    .admin-card:hover,
+    .sidebar-item:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   7. ПЕЙЗАЖНАЯ ОРИЕНТАЦИЯ
+   ============================================ */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+    .mobile-nav {
+        height: 56px;
+    }
+
+    .mobile-nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* ============================================
+   8. БОЛЬШИЕ ЭКРАНЫ
+   ============================================ */
+
+@media (min-width: 1441px) {
+    .wrapper {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1921px) {
+    .wrapper {
+        max-width: 1800px;
+    }
+}
+
+/* ============================================
+   ПОЛЕ ПАРОЛЯ С КНОПКОЙ "ГЛАЗ"
+   ============================================ */
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 45px;   /* отступ справа для кнопки */
+    box-sizing: border-box;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #888888;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: color 0.3s ease;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: #0070B8;
+}
+
+.password-toggle i {
+    font-size: 20px;
+}
+
+
+
+

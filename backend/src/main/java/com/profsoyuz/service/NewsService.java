@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.profsoyuz.repository.NewsCommentRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +23,17 @@ public class NewsService {
 
     private final NewsRepository newsRepository;
     private final NewsReactionRepository newsReactionRepository;
+    private final NotificationService notificationService;
+    private final NewsCommentRepository newsCommentRepository;
 
-    public NewsService(NewsRepository newsRepository, NewsReactionRepository newsReactionRepository) {
+    public NewsService(NewsRepository newsRepository,
+                       NewsReactionRepository newsReactionRepository,
+                       NotificationService notificationService,
+                       NewsCommentRepository newsCommentRepository) {
         this.newsRepository = newsRepository;
         this.newsReactionRepository = newsReactionRepository;
+        this.notificationService = notificationService;
+        this.newsCommentRepository = newsCommentRepository;
     }
 
     // ============================================
@@ -72,7 +80,17 @@ public class NewsService {
         news.setCreatedAt(LocalDateTime.now());
         news.setUpdatedAt(LocalDateTime.now());
 
-        return newsRepository.save(news);
+        News saved = newsRepository.save(news);
+
+        // ✅ УВЕДОМЛЕНИЕ ВСЕМ ПОЛЬЗОВАТЕЛЯМ
+        notificationService.createNotificationForAllUsers(
+                "news",
+                "Новая новость",
+                title,
+                "index.html"
+        );
+
+        return saved;
     }
 
     // ============================================
@@ -117,20 +135,20 @@ public class NewsService {
         response.setTitle(news.getTitle());
         response.setContent(news.getContent());
         response.setImageUrl(news.getImageUrl());
+        response.setAuthorName(news.getAuthor() != null ? news.getAuthor().getFullName() : "Unknown");
         response.setCreatedAt(news.getCreatedAt());
         response.setUpdatedAt(news.getUpdatedAt());
-        response.setAuthorName(news.getAuthor() != null ? news.getAuthor().getFullName() : "Unknown");
 
-        long likesCount = newsReactionRepository.countByNewsIdAndReactionType(news.getId(), ReactionType.LIKE);
-        long heartsCount = newsReactionRepository.countByNewsIdAndReactionType(news.getId(), ReactionType.HEART);
-        long firesCount = newsReactionRepository.countByNewsIdAndReactionType(news.getId(), ReactionType.FIRE);
-        long clapsCount = newsReactionRepository.countByNewsIdAndReactionType(news.getId(), ReactionType.CLAP);
+        // ✅ Счётчик комментариев
+        long commentsCount = newsCommentRepository.countByNewsId(news.getId());
+        response.setCommentsCount((int) commentsCount);
 
-        response.setLikesCount(likesCount);
-        response.setHeartsCount(heartsCount);
-        response.setFiresCount(firesCount);
-        response.setClapsCount(clapsCount);
-        response.setTotalReactionsCount(likesCount + heartsCount + firesCount + clapsCount);
+        // ✅ Считаем только СЕРДЕЧКИ
+        long hearts = newsReactionRepository.countByNewsIdAndReactionType(news.getId(), ReactionType.HEART);
+        response.setHeartsCount(hearts);
+
+        // ✅ Общее количество реакций = сердечки (т.к. других нет)
+        response.setTotalReactionsCount(hearts);
 
         return response;
     }

@@ -1,34 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form login and password</title>
+    <title>Вход | Профсоюз</title>
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="wrapper">
-    <form id="loginForm">
-        <h1>Login</h1>
+<div class="login-wrapper">
+    <form id="loginForm" class="login-form">
+        <!-- ЛОГОТИП -->
+        <div class="login-logo">
+            <img src="images/logo.svg" alt="Профсоюз" id="loginLogo">
+        </div>
+
+        <!-- ID ПОЛЬЗОВАТЕЛЯ -->
         <div class="input-box">
-            <input type="text" id="username" placeholder="Username" required>
-            <i class="bx bx-user"></i>
+            <input type="text" id="username" placeholder="ID пользователя" required>
         </div>
+
+        <!-- ПАРОЛЬ -->
         <div class="input-box">
-            <input type="password" id="password" placeholder="password" required>
-            <i class="bx bxs-lock-alt"></i>
+            <input type="password" id="password" placeholder="пароль" required>
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Показать пароль">
+                <i class="bx bx-show" id="toggleIcon"></i>
+            </button>
         </div>
-        <div class="remember">
-            <label><input type="checkbox">Remember me</label>
-            <a href="a">Forgot pass</a>
-        </div>
-        <button type="submit" class="btn">Login</button>
-        <div id="loginError" class="error-message" style="display: none; color: #ff6b6b; text-align: center; margin-top: 12px;"></div>
-        <div class="register-link">
-            <p>Don`t have an account? <a href="#">Register</a></p>
-        </div>
+
+        <!-- КНОПКА -->
+        <button type="submit" class="btn">Регистрация</button>
+
+        <!-- ОШИБКА -->
+        <div id="loginError" class="error-message" style="display: none;"></div>
     </form>
 </div>
 <script src="js/auth.js"></script>

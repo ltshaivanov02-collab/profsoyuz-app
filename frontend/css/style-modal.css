@@ -1,4 +1,7 @@
-/* ===== ПОДЛОЖКА ===== */
+/* ============================================
+   МОДАЛЬНЫЕ ОКНА
+   ============================================ */
+
 .modal-overlay {
     display: none;
     position: fixed;
@@ -22,17 +25,23 @@
     to { opacity: 1; }
 }
 
-/* ===== КОНТЕЙНЕР МОДАЛКИ ===== */
 .modal-container {
-    background: #fff;
+    background: #ffffff;
     border-radius: 16px;
     max-width: 560px;
-    width: 100%;
+    width: 95%;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     animation: modalSlideIn 0.3s ease;
-    padding: 0;
+}
+
+.modal-container.modal-lg {
+    max-width: 720px;
+}
+
+.modal-container.modal-xl {
+    max-width: 1100px;
 }
 
 @keyframes modalSlideIn {
@@ -46,29 +55,23 @@
     }
 }
 
-/* ===== ШАПКА МОДАЛКИ ===== */
+/* ===== ШАПКА ===== */
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    border-bottom: 2px solid #f0f2f5;
-    background: #fafafa;
-    border-radius: 16px 16px 0 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .modal-header h2 {
     font-size: 20px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: #000000;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.modal-header .modal-icon {
-    font-size: 24px;
 }
 
 .modal-close {
@@ -76,31 +79,30 @@
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: #999;
-    transition: 0.3s;
+    color: #888888;
+    transition: all 0.3s ease;
     line-height: 1;
     padding: 0 8px;
 }
 
 .modal-close:hover {
-    color: #333;
+    color: #0070B8;
     transform: rotate(90deg);
 }
 
-/* ===== ТЕЛО МОДАЛКИ ===== */
+/* ===== ТЕЛО ===== */
 .modal-body {
     padding: 24px;
 }
 
-/* ===== НИЗ МОДАЛКИ ===== */
+/* ===== НИЗ ===== */
 .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
     padding: 16px 24px;
-    border-top: 1px solid #f0f2f5;
-    background: #fafafa;
-    border-radius: 0 0 16px 16px;
+    border-top: 1px solid #f0f0f0;
+    flex-wrap: wrap;
 }
 
 /* ===== ПОЛЯ ВВОДА ===== */
@@ -110,10 +112,10 @@
 
 .modal-body .form-group label {
     display: block;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
-    margin-bottom: 4px;
-    color: #333;
+    margin-bottom: 6px;
+    color: #333333;
 }
 
 .modal-body .form-group label .required {
@@ -126,20 +128,21 @@
 .modal-body .form-group select {
     width: 100%;
     padding: 10px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid #e5e5e5;
     border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
-    transition: border 0.3s;
-    background: #fff;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    box-sizing: border-box;
 }
 
 .modal-body .form-group input:focus,
 .modal-body .form-group textarea:focus,
 .modal-body .form-group select:focus {
-    border-color: #0f3460;
+    border-color: #0070B8;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 112, 184, 0.1);
 }
 
 .modal-body .form-group textarea {
@@ -156,9 +159,16 @@
     flex: 1;
 }
 
-/* ===== ИНФОРМАЦИОННЫЙ БЛОК ===== */
+.modal-body .form-group small {
+    color: #888888;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
+/* ===== ИНФО-БЛОК ===== */
 .modal-info {
-    background: #f8f9fa;
+    background: #EBECED;
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 16px;
@@ -167,8 +177,8 @@
 .modal-info .info-item {
     display: flex;
     justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+    border-bottom: 1px solid #dde0e3;
     font-size: 14px;
 }
 
@@ -177,18 +187,35 @@
 }
 
 .modal-info .info-label {
-    color: #888;
+    color: #666666;
 }
 
 .modal-info .info-value {
-    color: #333;
+    color: #000000;
     font-weight: 500;
+    text-align: right;
+    max-width: 70%;
+    word-break: break-word;
 }
 
-/* ===== ПОДСКАЗКИ В ФОРМАХ ===== */
-.modal-body .form-group small {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
-    display: block;
-    margin-top: 4px;
+/* ===== ССЫЛКА НА PDF ===== */
+.document-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #0070B8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
 }
+
+.document-link:hover {
+    background: #005a94;
+    transform: scale(1.03);
+}
+

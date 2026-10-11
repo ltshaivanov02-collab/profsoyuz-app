@@ -6,21 +6,29 @@
     <title>Профиль | Профсоюз</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/style-profile.css">
+    <link rel="stylesheet" href="css/style-modal.css">
+    <link rel="stylesheet" href="css/style-header.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="wrapper">
     <header class="header">
-        <span class="logo">🏛️ Профсоюз</span>
+        <span class="logo">Профсоюз</span>
         <div class="header-actions">
+            <!-- 👤 Профиль -->
             <a href="profile.html" class="header-icon" title="Профиль">
                 <i class="bx bx-user-circle"></i>
             </a>
-            <a href="#" class="header-icon" title="Уведомления">
+
+            <!-- 🔔 Уведомления -->
+            <a href="#" class="header-icon" title="Уведомления" onclick="openNotificationsModal(); return false;">
                 <i class="bx bx-bell"></i>
-                <span class="badge">3</span>
+                <span class="badge" id="notificationBadge" style="display:none;">0</span>
             </a>
-            <a href="#" class="header-icon" title="Настройки">
+
+            <!-- ⚙️ Настройки -->
+            <a href="profile.html?openSettings=true" class="header-icon" title="Настройки">
                 <i class="bx bx-cog"></i>
             </a>
         </div>
@@ -30,107 +38,380 @@
         <aside class="container">
             <nav class="navigation">
                 <ul>
-                    <li><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
-                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
-                    <li class="active"><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
-                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
-                    <li id="navAdmin" style="display:none;"><a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a></li>
-                    <li id="navStatistics" style="display:none;"><a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a></li>
-                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="events.html">События</a></li>
+                    <li class="active"><a href="profile.html">Профиль</a></li>
+                    <li><a href="communication.html">Обращение</a></li>
+                    <li id="navAdmin" style="display:none;"><a href="admin.html">Админ-панель</a></li>
+                    <li id="navStatistics" style="display:none;"><a href="statistics.html">Статистика</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn">Выйти</a></li>
                 </ul>
             </nav>
         </aside>
 
         <main class="main-content">
+            <!-- ===== ЗАГОЛОВОК ПРОФИЛЯ ===== -->
             <div class="page-header">
-                <h2>👤 Личный кабинет</h2>
+                <h2>Личный кабинет</h2>
                 <span class="role-badge" id="roleBadge">USER</span>
             </div>
 
+            <!-- ===== КАРТОЧКА ПРОФИЛЯ ===== -->
             <div class="profile-card">
                 <div class="profile-avatar">
-                    <img id="profilePhoto" src="https://via.placeholder.com/120" alt="Фото профиля">
-                    <div class="avatar-actions">
-                        <button id="uploadPhotoBtn" class="btn btn-sm btn-primary">📷</button>
-                        <button id="removePhotoBtn" class="btn btn-sm btn-danger">✕</button>
-                    </div>
+                    <img id="profilePhoto"
+                         src="https://ui-avatars.com/api/?name=User&background=0f3460&color=fff&size=120"
+                         alt="Фото профиля">
                 </div>
                 <div class="profile-details">
                     <p><strong>Имя:</strong> <span id="fullName">—</span></p>
                     <p><strong>Логин:</strong> <span id="username">—</span></p>
                     <p><strong>Роль:</strong> <span id="roleText">—</span></p>
                     <p><strong>Email:</strong> <span id="email">—</span></p>
-                    <div class="profile-actions">
-                        <button id="editProfileBtn" class="btn btn-warning">✏️ Редактировать</button>
-                        <button id="changePasswordBtn" class="btn btn-secondary">🔑 Сменить пароль</button>
-                    </div>
                 </div>
             </div>
 
-            <section class="section-card">
-                <h3>🗓️ Календарь мероприятий</h3>
-                <div class="calendar-controls">
-                    <button id="prevMonthBtn" class="btn btn-secondary btn-sm">◀</button>
-                    <span id="currentMonthLabel">Август 2026</span>
-                    <button id="nextMonthBtn" class="btn btn-secondary btn-sm">▶</button>
-                </div>
-                <div id="calendarGrid" class="calendar-grid"></div>
-                <div id="selectedDayEvents" class="selected-day-events"></div>
-            </section>
-
-            <section class="section-card">
-                <div class="section-header">
-                    <h3>📋 Мои заявления</h3>
-                    <div class="section-filters">
-                        <button class="filter-btn active" data-filter="all">Все</button>
-                        <button class="filter-btn" data-filter="PENDING">⏳ В обработке</button>
-                        <button class="filter-btn" data-filter="APPROVED">✅ Одобрено</button>
-                        <button class="filter-btn" data-filter="REJECTED">❌ Отклонено</button>
-                    </div>
-                </div>
-                <div id="applicationsList" class="applications-list"></div>
-            </section>
-
-            <section class="section-card">
-                <h3>⭐ Мои закладки</h3>
-                <div id="bookmarksList" class="bookmarks-list"></div>
-            </section>
+            <!-- ===== ИКОНКИ-КНОПКИ ===== -->
+            <div class="profile-menu">
+                <button class="menu-item" onclick="openSettingsModal()">
+                    <div class="menu-icon"><i class="bx bx-cog"></i></div>
+                    <div class="menu-label">Настройки</div>
+                </button>
+                <button class="menu-item" onclick="openCalendarModal()">
+                    <div class="menu-icon"><i class="bx bx-calendar"></i></div>
+                    <div class="menu-label">Календарь</div>
+                </button>
+                <button class="menu-item" onclick="openMyApplications()">
+                    <div class="menu-icon"><i class="bx bx-file"></i></div>
+                    <div class="menu-label">Мои заявления</div>
+                </button>
+                <button class="menu-item" onclick="openMyQuestions()">
+                    <div class="menu-icon"><i class="bx bx-question-mark"></i></div>
+                    <div class="menu-label">Мои вопросы</div>
+                </button>
+                <button class="menu-item" onclick="openBookmarksModal()">
+                    <div class="menu-icon"><i class="bx bx-bookmark"></i></div>
+                    <div class="menu-label">Закладки</div>
+                </button>
+            </div>
         </main>
 
         <aside class="sidebar">
             <div class="sidebar-content">
-                <h3>📊 Активность</h3>
-                <div class="activity-stats">
-                    <div class="activity-item">
-                        <span class="activity-label">Заявлений:</span>
-                        <span class="activity-value" id="activityApplications">0</span>
+                <h3>Активность</h3>
+                <div class="admin-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Заявлений</span>
+                        <span class="stat-value" id="activityApplications">0</span>
                     </div>
-                    <div class="activity-item">
-                        <span class="activity-label">Вопросов:</span>
-                        <span class="activity-value" id="activityQuestions">0</span>
+                    <div class="stat-item">
+                        <span class="stat-label">Вопросов</span>
+                        <span class="stat-value" id="activityQuestions">0</span>
                     </div>
-                    <div class="activity-item">
-                        <span class="activity-label">Закладок:</span>
-                        <span class="activity-value" id="activityBookmarks">0</span>
+                    <div class="stat-item">
+                        <span class="stat-label">Закладок</span>
+                        <span class="stat-value" id="activityBookmarks">0</span>
                     </div>
-                    <div class="activity-item">
-                        <span class="activity-label">Событий:</span>
-                        <span class="activity-value" id="activityEvents">0</span>
+                    <div class="stat-item">
+                        <span class="stat-label">Событий</span>
+                        <span class="stat-value" id="activityEvents">0</span>
                     </div>
                 </div>
-                <hr>
-                <h3>📌 Быстрые ссылки</h3>
-                <ul class="quick-links">
-                    <li><a href="communication.html"><i class="bx bx-chat"></i> Новое обращение</a></li>
-                    <li><a href="events.html"><i class="bx bx-calendar"></i> Смотреть события</a></li>
-                    <li><a href="index.html"><i class="bx bx-news"></i> Читать новости</a></li>
-                </ul>
             </div>
         </aside>
+
     </div>
 </div>
 
+<!-- ============================================ -->
+<!-- МОДАЛЬНЫЕ ОКНА                                -->
+<!-- ============================================ -->
+
+<!-- МОДАЛКА: НАСТРОЙКИ ПРОФИЛЯ -->
+<div id="settingsModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Настройки профиля</h2>
+            <button class="modal-close" onclick="Modal.close('settingsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+
+            <!-- ===== ФОТО ПРОФИЛЯ ===== -->
+            <div class="settings-avatar-block">
+                <div class="settings-avatar">
+                    <img id="settingsPhoto"
+                         src="https://ui-avatars.com/api/?name=User&background=0f3460&color=fff&size=120"
+                         alt="Фото профиля">
+                    <div class="avatar-actions">
+                        <label for="photoUpload" class="btn-upload-plus" title="Загрузить фото">
+                            +
+                        </label>
+                        <input type="file" id="photoUpload" accept="image/*" style="display:none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== АККОРДЕОН: ЛИЧНЫЕ ДАННЫЕ ===== -->
+            <div class="accordion" id="personalDataAccordion">
+                <div class="accordion-header" onclick="toggleAccordion('personalDataAccordion')">
+                    <div class="accordion-title">
+                        <span>Личные данные</span>
+                    </div>
+                    <span class="accordion-arrow">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" id="settingsFullName" placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="settingsEmail" placeholder="Введите email">
+                    </div>
+                    <div class="accordion-actions">
+                        <button class="btn btn-primary" onclick="saveProfileSettings()">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== АККОРДЕОН: СМЕНА ПАРОЛЯ ===== -->
+            <div class="accordion" id="passwordAccordion">
+                <div class="accordion-header" onclick="toggleAccordion('passwordAccordion')">
+                    <div class="accordion-title">
+                        <span>Смена пароля</span>
+                    </div>
+                    <span class="accordion-arrow">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <div class="form-group">
+                        <label>Текущий пароль</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="oldPassword" placeholder="Введите текущий пароль">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('oldPassword', 'toggleOldIcon')" title="Показать пароль">
+                                <i class="bx bx-show" id="toggleOldIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Новый пароль</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="newPassword" placeholder="Минимум 6 символов">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword', 'toggleNewIcon')" title="Показать пароль">
+                                <i class="bx bx-show" id="toggleNewIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Подтвердите пароль</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="confirmPassword" placeholder="Повторите пароль">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', 'toggleConfirmIcon')" title="Показать пароль">
+                                <i class="bx bx-show" id="toggleConfirmIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="accordion-actions">
+                        <button class="btn btn-primary" onclick="saveNewPassword()">Сменить пароль</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" onclick="handleLogout()">Выйти</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: КАЛЕНДАРЬ -->
+<div id="calendarModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Календарь событий</h2>
+            <button class="modal-close" onclick="Modal.close('calendarModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="calendar-controls">
+                <button id="prevMonthBtn" class="btn btn-secondary btn-sm">◀</button>
+                <span id="currentMonthLabel">Август 2026</span>
+                <button id="nextMonthBtn" class="btn btn-secondary btn-sm">▶</button>
+            </div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+            <div id="selectedDayEvents" class="selected-day-events"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('calendarModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: ПРОСМОТР СОБЫТИЯ (ИЗ КАЛЕНДАРЯ) -->
+<div id="calendarEventViewModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2> <span id="calendarEventViewTitle">Событие</span></h2>
+            <button class="modal-close" onclick="Modal.close('calendarEventViewModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="calendarEventViewContent"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('calendarEventViewModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: МОИ ЗАЯВЛЕНИЯ -->
+<div id="myApplicationsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Мои заявления</h2>
+            <button class="modal-close" onclick="Modal.close('myApplicationsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="myApplicationsList" class="my-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('myApplicationsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: ДЕТАЛИ ЗАЯВЛЕНИЯ -->
+<div id="myApplicationViewModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2><span id="myApplicationViewTitle">Заявление</span></h2>
+            <button class="modal-close" onclick="Modal.close('myApplicationViewModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="myApplicationViewContent"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="backToApplicationsList()">Назад к списку</button>
+            <button class="btn btn-secondary" onclick="Modal.close('myApplicationViewModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: МОИ ВОПРОСЫ -->
+<div id="myQuestionsModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Мои вопросы</h2>
+            <button class="modal-close" onclick="Modal.close('myQuestionsModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="myQuestionsList" class="my-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('myQuestionsModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: ДЕТАЛИ ВОПРОСА -->
+<div id="myQuestionViewModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2><span id="myQuestionViewTitle">Вопрос</span></h2>
+            <button class="modal-close" onclick="Modal.close('myQuestionViewModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="myQuestionViewContent"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="backToQuestionsList()">Назад к списку</button>
+            <button class="btn btn-secondary" onclick="Modal.close('myQuestionViewModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: ЗАКЛАДКИ -->
+<div id="bookmarksModal" class="modal-overlay">
+    <div class="modal-container modal-lg">
+        <div class="modal-header">
+            <h2>Мои закладки</h2>
+            <button class="modal-close" onclick="Modal.close('bookmarksModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="bookmarks-tabs">
+                <button class="bookmark-tab active" data-type="all" onclick="setBookmarkFilter('all', this)">
+                    Все
+                </button>
+                <button class="bookmark-tab" data-type="news" onclick="setBookmarkFilter('news', this)">
+                    Новости
+                </button>
+                <button class="bookmark-tab" data-type="events" onclick="setBookmarkFilter('events', this)">
+                    События
+                </button>
+            </div>
+            <div id="bookmarksModalList" class="my-list">
+                <p style="text-align:center;color:#888;">Загрузка...</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="Modal.close('bookmarksModal')">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛКА: УВЕДОМЛЕНИЯ -->
+<div id="notificationsModal">
+    <div class="notifications-panel">
+        <div class="notifications-header">
+            <h2>🔔 Уведомления</h2>
+            <div class="notifications-header-actions">
+                <button class="notifications-clear-btn" onclick="clearAllNotifications()">Очистить</button>
+                <button class="notifications-close" onclick="document.getElementById('notificationsModal').classList.remove('active'); document.body.style.overflow='';">&times;</button>
+            </div>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+            <p style="text-align:center;color:#888;padding:20px;">Загрузка...</p>
+        </div>
+    </div>
+</div>
+
+<nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item" data-page="index">
+        <img src="images/home.svg" alt="Главная" class="mobile-nav-icon">
+        <span>Главная</span>
+    </a>
+    <a href="events.html" class="mobile-nav-item" data-page="events">
+        <img src="images/calendar.svg" alt="События" class="mobile-nav-icon">
+        <span>События</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item active" data-page="profile">
+        <img src="images/profile.svg" alt="Профиль" class="mobile-nav-icon">
+        <span>Профиль</span>
+    </a>
+    <a href="communication.html" class="mobile-nav-item" data-page="communication">
+        <img src="images/message.svg" alt="Обращение" class="mobile-nav-icon">
+        <span>Обращение</span>
+    </a>
+    <a href="admin.html" class="mobile-nav-item" data-page="admin" id="mobileNavAdmin" style="display:none;">
+        <img src="images/settings1.svg" alt="Админ" class="mobile-nav-icon">
+        <span>Админ</span>
+    </a>
+    <a href="statistics.html" class="mobile-nav-item" data-page="statistics" id="mobileNavStatistics" style="display:none;">
+        <img src="images/settings1.svg" alt="Статистика" class="mobile-nav-icon">
+        <span>Статистика</span>
+    </a>
+</nav>
+
+<!-- ============================================ -->
+<!-- ПОДКЛЮЧЕНИЕ JS                                -->
+<!-- ============================================ -->
+
 <script src="js/auth.js"></script>
+<script src="js/modal.js"></script>
+<script src="js/header.js"></script>
 <script src="js/profile.js"></script>
 </body>
 </html>

@@ -6,22 +6,31 @@
     <title>Главная | Профсоюз</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/style-index.css">
+    <link rel="stylesheet" href="css/style-header.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/style-actions.css">
+    <link rel="stylesheet" href="css/style-comments.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
+
 <body>
 <div class="wrapper">
     <!-- ===== ШАПКА ===== -->
     <header class="header">
-        <span class="logo">🏛️ Профсоюз</span>
+        <span class="logo">Профсоюз</span>
         <div class="header-actions">
+
             <a href="profile.html" class="header-icon" title="Профиль">
                 <i class="bx bx-user-circle"></i>
             </a>
-            <a href="#" class="header-icon" title="Уведомления">
+
+            <a href="#" class="header-icon" title="Уведомления" onclick="openNotificationsModal(); return false;">
                 <i class="bx bx-bell"></i>
-                <span class="badge">3</span>
+                <span class="badge" id="notificationBadge" style="display:none;">0</span>
             </a>
-            <a href="#" class="header-icon" title="Настройки">
+
+            <a href="profile.html?openSettings=true" class="header-icon" title="Настройки">
                 <i class="bx bx-cog"></i>
             </a>
         </div>
@@ -34,22 +43,20 @@
         <aside class="container">
             <nav class="navigation">
                 <ul>
-                    <li class="active"><a href="index.html"><i class="bx bx-home"></i> Главная</a></li>
-                    <li><a href="events.html"><i class="bx bx-calendar"></i> События</a></li>
-                    <li><a href="profile.html"><i class="bx bx-user"></i> Профиль</a></li>
-                    <li><a href="communication.html"><i class="bx bx-chat"></i> Обращение</a></li>
+                    <li class="active"><a href="index.html">Главная</a></li>
+                    <li><a href="events.html">События</a></li>
+                    <li><a href="profile.html">Профиль</a></li>
+                    <li><a href="communication.html">Обращение</a></li>
 
-                    <!-- Ссылка на админ-панель (скрыта по умолчанию) -->
                     <li id="navAdmin" style="display:none;">
-                        <a href="admin.html"><i class="bx bx-cog"></i> Админ-панель</a>
+                        <a href="admin.html">Админ-панель</a>
                     </li>
 
-                    <!-- Ссылка на статистику (скрыта по умолчанию) -->
                     <li id="navStatistics" style="display:none;">
-                        <a href="statistics.html"><i class="bx bx-stats"></i> Статистика</a>
+                        <a href="statistics.html">Статистика</a>
                     </li>
 
-                    <li class="btn"><a href="#" id="logoutBtn"><i class="bx bx-log-out"></i> Выйти</a></li>
+                    <li class="btn"><a href="#" id="logoutBtn">Выйти</a></li>
                 </ul>
             </nav>
         </aside>
@@ -57,29 +64,75 @@
         <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА (новости) -->
         <main class="main-content">
             <div class="page-header">
-                <h2>📰 Новости</h2>
-
+                <h2>Новости</h2>
             </div>
-            <div id="newsList" class="card-list">
-                <!-- Сюда JavaScript вставит карточки новостей -->
-            </div>
+            <div id="newsList" class="card-list"></div>
         </main>
 
         <!-- ПРАВАЯ КОЛОНКА (sidebar) -->
         <aside class="sidebar">
             <div class="sidebar-content">
-                <h3>📋 Последние заявки</h3>
-                <p>Нет новых заявок</p>
+                <h3>Мне понравилось</h3>
+                <div id="likedNewsList" class="sidebar-list">
+                    <p class="sidebar-empty">Загрузка...</p>
+                </div>
                 <hr>
-                <h3>⭐ Закладки</h3>
-                <p>Нет закладок</p>
+                <h3>Закладки</h3>
+                <div id="bookmarkedNewsList" class="sidebar-list">
+                    <p class="sidebar-empty">Загрузка...</p>
+                </div>
             </div>
         </aside>
 
     </div>
 </div>
 
+<!-- МОДАЛКА: УВЕДОМЛЕНИЯ -->
+<div id="notificationsModal">
+    <div class="notifications-panel">
+        <div class="notifications-header">
+            <h2>Уведомления</h2>
+            <div class="notifications-header-actions">
+                <button class="notifications-clear-btn" onclick="clearAllNotifications()">Очистить</button>
+                <button class="notifications-close" onclick="document.getElementById('notificationsModal').classList.remove('active'); document.body.style.overflow='';">&times;</button>
+            </div>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+            <p style="text-align:center;color:#888;padding:20px;">Загрузка...</p>
+        </div>
+    </div>
+</div>
+
+<nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item active" data-page="index">
+        <img src="images/home.svg" alt="Главная" class="mobile-nav-icon">
+        <span>Главная</span>
+    </a>
+    <a href="events.html" class="mobile-nav-item" data-page="events">
+        <img src="images/calendar.svg" alt="События" class="mobile-nav-icon">
+        <span>События</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item" data-page="profile">
+        <img src="images/profile.svg" alt="Профиль" class="mobile-nav-icon">
+        <span>Профиль</span>
+    </a>
+    <a href="communication.html" class="mobile-nav-item" data-page="communication">
+        <img src="images/message.svg" alt="Обращение" class="mobile-nav-icon">
+        <span>Обращение</span>
+    </a>
+    <a href="admin.html" class="mobile-nav-item" data-page="admin" id="mobileNavAdmin" style="display:none;">
+        <img src="images/settings1.svg" alt="Админ" class="mobile-nav-icon">
+        <span>Админ</span>
+    </a>
+    <a href="statistics.html" class="mobile-nav-item" data-page="statistics" id="mobileNavStatistics" style="display:none;">
+        <img src="images/settings1.svg" alt="Статистика" class="mobile-nav-icon">
+        <span>Статистика</span>
+    </a>
+</nav>
+
 <script src="js/auth.js"></script>
+<script src="js/header.js"></script>
 <script src="js/news.js"></script>
+<script src="js/comments.js"></script>
 </body>
 </html>
